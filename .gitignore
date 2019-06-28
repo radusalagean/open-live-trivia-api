@@ -68,3 +68,6 @@ public/
 
 # auto generated package-lock.json
 package-lock.json
+
+# Firebase Admin SDK Key
+*firebase-adminsdk*
