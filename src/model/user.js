@@ -6,11 +6,10 @@ const TYPE_REGULAR = 0
 const TYPE_MODERATOR = 1
 const TYPE_ADMIN = 2
 
-let User = new Schema({
+const UserSchema = new Schema({
     firebaseUid: {
         type: String,
-        required: true,
-        select: false
+        required: true
     },
     username: {
         type: String,
@@ -39,7 +38,22 @@ let User = new Schema({
     },
     idTokenExp: {
         type: Date,
+        required: true
+    },
+    coins: {
+        type: Number,
         required: true,
-        select: false
+        default: 100
     }
 })
+
+const User = mongoose.model('User', UserSchema)
+
+// module.exports = mongoose.model('User', UserSchema)
+
+module.exports = {
+    TYPE_REGULAR,
+    TYPE_MODERATOR,
+    TYPE_ADMIN,
+    User
+}
