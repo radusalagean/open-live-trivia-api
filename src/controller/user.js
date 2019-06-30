@@ -95,5 +95,45 @@ module.exports = () => {
         })
     });
 
+    api.put('/rights/:user_id/:rights', auth.authorized, auth.adminRights, (req, res) => {
+        let userId = req.params.user_id
+        let rights = req.params.rights
+        if (!userId) {
+            return res.status(HttpStatus.BAD_REQUEST)
+                .json(jrh.message('Please provide the user id in the request URL for the account you want to modify'))
+        }
+        if (!rights) {
+            return res.status(HttpStatus.BAD_REQUEST)
+                .json(jrh.message('Please provide the rights in the request URL for the specified account'))
+        }
+        if (rights < userModel.TYPE_REGULAR || rights > userModel.TYPE_ADMIN) {
+            return res.status(HttpStatus.BAD_REQUEST)
+                .json(jrh.message('You specified unknown rights type'))
+        }
+        userModel.User.findById(userId, (err, user) => {
+            if (err) {
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .json(jrh.message(`Error: ${err.message}`))
+            }
+            if (!user) {
+                return res.status(HttpStatus.NOT_FOUND)
+                    .json(jrh.message('No user found for the passed user id'))
+            }
+            if (user.rights == rights) {
+                return res.status(HttpStatus.BAD_REQUEST)
+                    .json(jrh.message(`The user already has the specified rights (type ${rights})`))
+            }
+            user.rights = rights
+            user.save(err => {
+                if (err) {
+                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json(jrh.message(`Error ${err.message}`))
+                }
+                res.status(HttpStatus.OK)
+                    .json(jrh.message(`${user.username}'s rights changed to type ${rights}`))
+            })
+        })
+    })
+
     return api
 }

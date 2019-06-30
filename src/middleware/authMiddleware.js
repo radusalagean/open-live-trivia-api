@@ -38,6 +38,28 @@ const authorized = (req, res, next) => {
     })
 }
 
+const moderatorRights = (req, res, next) => {
+    let user = res.locals.user
+    if (assertRights(user, userModel.TYPE_MODERATOR, res)) {
+        next()
+    }
+}
+
+const adminRights = (req, res, next) => {
+    let user = res.locals.user
+    if (assertRights(user, userModel.TYPE_ADMIN, res)) {
+        next()
+    }
+}
+
+function assertRights(user, rights, res) {
+    if (user.rights !== rights) {
+        res.status(HttpStatus.UNAUTHORIZED)
+            .json(jrh.message(`You require rights type ${rights} for this operation`))
+    }
+    return user.rights === rights
+}
+
 function assertAuthorizedHeader(req, res) {
     let idToken = req.headers.authorization
     if (!idToken) {
@@ -119,6 +141,8 @@ function verifyIdTokenWithFirebase(idToken, onError, onUidFound, onUidNotFound) 
 
 module.exports = {
     authorized,
+    moderatorRights,
+    adminRights,
     assertAuthorizedHeader,
     checkUsernameConflict,
     verifyIdTokenWithFirebase
