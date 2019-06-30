@@ -72,7 +72,7 @@ module.exports = () => {
         }, err => {
             if (err) {
                 return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .json(jrh.message(`Error: ${error.message}`))
+                    .json(jrh.message(`Error: ${err.message}`))
             }
             return res.status(HttpStatus.OK)
                 .json(jrh.message('Account removed successfully'))
