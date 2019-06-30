@@ -1,15 +1,14 @@
 import mongoose from 'mongoose'
 
-const Schema = mongoose.Schema
-
 const TYPE_REGULAR = 0
 const TYPE_MODERATOR = 1
 const TYPE_ADMIN = 2
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
     firebaseUid: {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
     username: {
         type: String,

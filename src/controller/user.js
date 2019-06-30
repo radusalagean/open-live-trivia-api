@@ -7,7 +7,7 @@ import * as auth from '../middleware/authMiddleware'
 module.exports = () => {
     let api = Router()
 
-    api.post('/login', auth.authorized, (req, res) => {
+    api.get('/login', auth.authorized, (req, res) => {
         res.json(res.locals.user)
     })
 
