@@ -1,5 +1,5 @@
 import Router from 'express'
-import * as userModel from '../model/user'
+import * as userModel from '../db/model/user'
 import HttpStatus from 'http-status-codes'
 import * as jrh from '../helpers/jsonResponseHelpers'
 import * as auth from '../middleware/authMiddleware'
@@ -7,7 +7,7 @@ import * as auth from '../middleware/authMiddleware'
 module.exports = () => {
     let api = Router()
 
-    api.get('/login', auth.authorized, (req, res) => {
+    api.get('/login', auth.authorizedRequest, (req, res) => {
         res.json(res.locals.user)
     })
 
@@ -61,7 +61,7 @@ module.exports = () => {
         })
     })
 
-    api.delete('/delete', auth.authorized, (req, res) => {
+    api.delete('/delete', auth.authorizedRequest, (req, res) => {
         let user = res.locals.user
         if (user.rights === userModel.TYPE_ADMIN) {
             return res.status(HttpStatus.UNAUTHORIZED)
@@ -95,7 +95,7 @@ module.exports = () => {
         })
     });
 
-    api.put('/rights/:user_id/:rights', auth.authorized, auth.adminRights, (req, res) => {
+    api.put('/rights/:user_id/:rights', auth.authorizedRequest, auth.adminRights, (req, res) => {
         let userId = req.params.user_id
         let rights = req.params.rights
         if (!userId) {

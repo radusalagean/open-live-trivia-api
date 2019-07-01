@@ -11,7 +11,7 @@ initializeDb(db => {
   // Internal MW
   router.use(middleware({config, db}))
   // Api Routes v1 (/v1)
-  router.use('/user', user({ config, db }))
+  router.use('/user', user())
 });
 
 export default router;

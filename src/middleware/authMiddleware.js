@@ -1,16 +1,74 @@
 import HttpStatus from 'http-status-codes'
-import * as userModel from '../model/user'
+import * as userModel from '../db/model/user'
 import * as admin from 'firebase-admin'
 import * as jrh from '../helpers/jsonResponseHelpers'
 
-const authorized = (req, res, next) => {
+/**
+ * Ensure received request is authorized properly
+ */
+const authorizedRequest = (req, res, next) => {
     // check if authorization header is present in the request
     console.log('Received authorized request')
     let idToken = req.headers.authorization
-    if (!idToken) {
-        return res.status(HttpStatus.UNAUTHORIZED)
-            .json(jrh.message('Authorized header unavailable'))
+    if (!assertAuthorizedHeader(req, res)) {
+        return
     }
+    checkAuthorizationLocally(idToken, err => {
+        // onError
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .json(jrh.message(`Error: ${err.message}`))
+    }, () => {
+        // onIdTokenUnknown
+        checkRequestAuthorizationWithFirebase(idToken, res, next)
+    }, () => {
+        // onIdTokenExpired
+        checkRequestAuthorizationWithFirebase(idToken, res, next)
+    }, user => {
+        // onIdTokenValid
+        res.locals.user = user
+        next()
+    })
+}
+
+/**
+ * Ensure connected socket is authorized properly
+ */
+const authorizedSocket = (socket, data, cb) => {
+    let idToken = data.idToken
+    if (!idToken) {
+        return cb(new Error('No idToken passed'), false)
+    }
+    checkAuthorizationLocally(idToken, err => {
+        // onError
+        cb(new Error(err.message), false)
+    }, () => {
+        // onIdTokenUnknown
+        checkSocketAuthorizationWithFirebase(idToken, cb)
+    }, () => {
+        // onIdTokenExpired
+        checkSocketAuthorizationWithFirebase(idToken, cb)
+    }, () => {
+        // onIdTokenValid
+        cb(null, true)
+    })
+}
+
+/**
+ * Init config for socketio-auth
+ */
+function socketAuthConfig(authenticate, postAuthenticate, disconnect, timeout) {
+    return {
+        authenticate: authenticate,
+        postAuthenticate: postAuthenticate,
+        disconnect: disconnect,
+        timeout: timeout
+    }
+}
+
+/**
+ * Check if the passed idToken is already saved in the database
+ */
+function checkAuthorizationLocally(idToken, onError, onIdTokenUnknown, onIdTokenExpired, onIdTokenValid) {
     console.log('Checking if the idToken is present in the database and is not expired')
     // check if the idToken is present in the database and is not expired
     userModel.User.findOne({
@@ -18,26 +76,26 @@ const authorized = (req, res, next) => {
     }, (err, user) => {
         if (err) {
             console.log(`Error: ${err.message}`)
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .json(jrh.message('Error while searching the database for the specified idToken'))
+            onError(err)
         }
         if (!user) {
             console.log('Passed idToken not found in the db')
-            checkAuthorization(idToken, res, next)
+            onIdTokenUnknown()
         } else {
             if (user.idTokenExp < Date.now()) {
                 console.log('Passed idToken was found in the database but it\'s expired')
-                checkAuthorization(idToken, res, next)
+                onIdTokenExpired()
             } else {
                 console.log('Passed idToken is valid')
-                // Keep a ref to user in order to access later
-                res.locals.user = user
-                next()
+                onIdTokenValid(user)
             }
         }
     })
 }
 
+/**
+ * Ensure received request is authorized properly as MODERATOR
+ */
 const moderatorRights = (req, res, next) => {
     let user = res.locals.user
     if (assertRights(user, userModel.TYPE_MODERATOR, res)) {
@@ -45,6 +103,9 @@ const moderatorRights = (req, res, next) => {
     }
 }
 
+/**
+ * Ensure received request is authorized properly as ADMIN
+ */
 const adminRights = (req, res, next) => {
     let user = res.locals.user
     if (assertRights(user, userModel.TYPE_ADMIN, res)) {
@@ -69,24 +130,19 @@ function assertAuthorizedHeader(req, res) {
     return idToken
 }
 
-function checkAuthorization(idToken, res, next) {
+function checkRequestAuthorizationWithFirebase(idToken, res, next) {
     verifyIdTokenWithFirebase(idToken, err => {
         // onError
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .json(jrh.message(`Error: (${err})`))
     }, (user, payload) => {
         // onUidFound
-        // Update idToken and idTokenExp
-        console.log(`Updating idToken(${idToken}) and idTokenExp(${payload.exp}) for uid ${payload.uid}`)
-        user.idToken = idToken
-        user.idTokenExp = new Date(payload.exp * 1000)
-        user.save(err => {
-            if (err) {
-                console.log(err.message)
-                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .json(jrh.message('Error while updating idToken in the db'))
-            }
-            console.log('Authorization check passed')
+        updateIdToken(idToken, user, payload, err => {
+            // onError
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .json(jrh.message(`Error: ${err.message}`))
+        }, () => {
+            // onComplete
             // Keep a ref to user in order to access later
             res.locals.user = user
             next()
@@ -98,8 +154,47 @@ function checkAuthorization(idToken, res, next) {
     })
 }
 
-// BASE METHODS
+function checkSocketAuthorizationWithFirebase(idToken, cb) {
+    verifyIdTokenWithFirebase(idToken, err => {
+        // onError
+        cb(new Error(err), false)
+    }, (user, payload) => {
+        // onUidFound
+        updateIdToken(idToken, user, payload, err => {
+            // onError
+            cb(new Error(err.message), false)
+        }, () => {
+            // onComplete
+            cb(null, true)
+        })
+    }, payload => {
+        // onUidNotFound
+        cb(new Error('User id not found for the specified token, you need to register first'), false)
+    })
+}
 
+/**
+ * Update the user's idToken database entry with a new one
+ */
+function updateIdToken(idToken, user, firebasePayload, onError, onComplete) {
+    // Update idToken and idTokenExp
+    //console.log(`Updating idToken(${idToken}) and idTokenExp(${firebasePayload.exp}) for uid ${firebasePayload.uid}`)
+    user.idToken = idToken
+    user.idTokenExp = new Date(firebasePayload.exp * 1000)
+    user.save(err => {
+        if (err) {
+            console.log(err.message)
+            onError(err)
+        }
+        console.log('Authorization check passed')
+        onComplete()
+    })
+}
+
+/**
+ * Check if the passed username is in conflict with another registered username
+ * (the operation is case-insensitive)
+ */
 function checkUsernameConflict(username, onError, onConflict, onNonConflict) {
     userModel.User.findOne({
         username: {
@@ -113,6 +208,9 @@ function checkUsernameConflict(username, onError, onConflict, onNonConflict) {
     })
 }
 
+/**
+ * Use Firebase Admin to check the passed idToken's validity
+ */
 function verifyIdTokenWithFirebase(idToken, onError, onUidFound, onUidNotFound) {
     // Check idToken w/ Firebase Admin
     console.log('Checking idToken with Firebase Admin')
@@ -140,7 +238,9 @@ function verifyIdTokenWithFirebase(idToken, onError, onUidFound, onUidNotFound) 
 }
 
 module.exports = {
-    authorized,
+    authorizedRequest,
+    authorizedSocket,
+    socketAuthConfig,
     moderatorRights,
     adminRights,
     assertAuthorizedHeader,
