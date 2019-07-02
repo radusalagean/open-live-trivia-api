@@ -18,7 +18,7 @@ const app = express()
 // Parse application/json
 app.use(bodyParser.json({
     limit: config.bodyLimit
-}));
+}))
 
 // Routes
 app.use('/open-live-trivia-api/v1/', routes)
@@ -34,5 +34,7 @@ server.listen(config.port, () => {
     // Socket init
     socketAuth(serverSocket, auth.socketAuthConfig(auth.authorizedSocket, 
         game.postAuth, game.disconnect, config.socketAuthTimeout))
+    // Start game
+    game.start()
 })
 

@@ -4,7 +4,7 @@ import middleware from '../middleware'
 import initializeDb from "../db"
 import user from '../controller/user'
 
-let router = express();
+let router = express()
 
 // Connect to DB
 initializeDb(db => {
@@ -12,6 +12,6 @@ initializeDb(db => {
   router.use(middleware({config, db}))
   // Api Routes v1 (/v1)
   router.use('/user', user())
-});
+})
 
-export default router;
+export default router

@@ -87,13 +87,13 @@ module.exports = () => {
         }
         auth.checkUsernameConflict(username, err => {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .json(jrh.message(`Error: ${err}`));
+                .json(jrh.message(`Error: ${err}`))
         }, () => {
             res.status(HttpStatus.CONFLICT).send()
         }, () => {
             res.status(HttpStatus.OK).send()
         })
-    });
+    })
 
     api.put('/rights/:user_id/:rights', auth.authorizedRequest, auth.adminRights, (req, res) => {
         let userId = req.params.user_id
