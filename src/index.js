@@ -35,6 +35,5 @@ server.listen(config.port, () => {
     socketAuth(serverSocket, auth.socketAuthConfig(auth.authorizedSocket, 
         game.postAuth, game.disconnect, config.socketAuthTimeout))
     // Start game
-    game.start()
+    game.start(serverSocket)
 })
-

@@ -11,6 +11,7 @@ const REACTION = 'REACTION'
 const WELCOME = 'WELCOME'
 const PEER_JOIN = 'PEER_JOIN'
 const PEER_ATTEMPT = 'PEER_ATTEMPT'
+const COIN_DIFF = 'COIN_DIFF'
 const PEER_REACTION = 'PEER_REACTION'
 const ROUND = 'ROUND'
 const SPLIT = 'SPLIT'
@@ -29,6 +30,7 @@ module.exports = {
     WELCOME, 
     PEER_JOIN, 
     PEER_ATTEMPT, 
+    COIN_DIFF,
     PEER_REACTION, 
     ROUND, 
     SPLIT, 

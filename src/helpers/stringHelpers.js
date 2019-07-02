@@ -12,7 +12,15 @@ function occurrenceCount(originalStr, query) {
     return originalStr.split(query).length - 1
 }
 
+function trimSurroundingCharacter(str, character) {
+    if (str.charAt(0) === character && str.charAt(str.length -1) === character) {
+        str = str.substr(1, str.length -2);
+    }
+    return str
+}
+
 module.exports = {
     replaceAt,
-    occurrenceCount
+    occurrenceCount,
+    trimSurroundingCharacter
 }

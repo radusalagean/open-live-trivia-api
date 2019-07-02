@@ -43,12 +43,13 @@ const authorizedSocket = (socket, data, cb) => {
         cb(new Error(err.message), false)
     }, () => {
         // onIdTokenUnknown
-        checkSocketAuthorizationWithFirebase(idToken, cb)
+        checkSocketAuthorizationWithFirebase(idToken, socket, cb)
     }, () => {
         // onIdTokenExpired
-        checkSocketAuthorizationWithFirebase(idToken, cb)
-    }, () => {
+        checkSocketAuthorizationWithFirebase(idToken, socket, cb)
+    }, user => {
         // onIdTokenValid
+        socket.client.user = user
         cb(null, true)
     })
 }
@@ -154,7 +155,7 @@ function checkRequestAuthorizationWithFirebase(idToken, res, next) {
     })
 }
 
-function checkSocketAuthorizationWithFirebase(idToken, cb) {
+function checkSocketAuthorizationWithFirebase(idToken, socket, cb) {
     verifyIdTokenWithFirebase(idToken, err => {
         // onError
         cb(new Error(err), false)
@@ -165,6 +166,7 @@ function checkSocketAuthorizationWithFirebase(idToken, cb) {
             cb(new Error(err.message), false)
         }, () => {
             // onComplete
+            socket.client.user = user
             cb(null, true)
         })
     }, payload => {

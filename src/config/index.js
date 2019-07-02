@@ -4,5 +4,9 @@ export default {
     'mongoUrl': 'mongodb://localhost:27017/open-live-trivia-api',
     'bodyLimit': '100kb',
     'splitInterval': 15 * 1000,
-    'roundEndDelay': 8 * 1000
+    'roundEndDelay': 8 * 1000,
+    'excludedCharacters': new Set([' ', '"', '-', '(', ')', '.', ',', '&', '/']),
+    'freeAttemptsPerRound': 3,
+    'extraAttemptCost': 1,
+    'attemptStringMaxLength': 200
 }
