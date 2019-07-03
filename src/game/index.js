@@ -3,6 +3,7 @@ import * as jservice from '../game/jservice'
 import * as stringHelpers from '../helpers/stringHelpers'
 import config from '../config'
 import Timer from './timer'
+import ReportedEntry from '../model/reportedEntry'
 
 const GAME_STATE_NONE = 0
 const GAME_STATE_SPLIT = 1
@@ -30,6 +31,7 @@ var currentValue
 var splitValue
 var roundAttempts
 var roundAttemptsCountMap
+var reporters
 
 function start(socket) {
     serverSocket = socket
@@ -43,7 +45,7 @@ function requestNewEntry() {
     }
     jservice.requestRandomEntry(err => {
         // onError
-        // TODO
+        // TODO Handle
     }, entry => {
         // onSuccess
         console.log(entry)
@@ -51,14 +53,34 @@ function requestNewEntry() {
             console.log('<!> Invalid entry received, requesting another one...')
             requestNewEntry()
         } else {
-            // TODO check if entry is banned
-            clearRoundVars()
-            currentEntry = entry
-            roundAttempts = []
-            roundAttemptsCountMap = new Map()
-            startRound()
+            isEntryBanned(entry, banned => {
+                if (banned) {
+                    console.log(`<!> BANNED entry received, requesting another one...`)
+                    requestNewEntry()
+                    return
+                }
+                clearRoundVars()
+                currentEntry = entry
+                roundAttempts = []
+                roundAttemptsCountMap = new Map()
+                reporters = new Set()
+                startRound()
+            })
         }
         
+    })
+}
+
+function isEntryBanned(entry, cb) {
+    ReportedEntry.findOne({
+        entryId: entry.id,
+        banned: true
+    }, (err, entry) => {
+        if (err) {
+            console.log(`Error: ${err.message}`)
+            // TODO Handle
+        }
+        cb(entry ? true : false)
     })
 }
 
@@ -161,6 +183,7 @@ function clearRoundVars() {
     splitValue = undefined
     roundAttempts = undefined
     roundAttemptsCountMap = undefined
+    reporters = undefined
 }
 
 function prepareNextRound() {
@@ -174,7 +197,7 @@ function areMoreSplitsAvailable() {
 }
 
 function isEntryValid(entry) {
-    if (!entry || !entry.question.trim() ||
+    if (!entry || !entry.id || !entry.question.trim() ||
             !entry.answer.trim() || !entry.answer.trim() || 
             entry.answer.includes('_')) {
         return false
@@ -183,7 +206,7 @@ function isEntryValid(entry) {
 }
 
 function postAuth(socket, data) {
-    console.log(`postAuth(${socket.id})`)
+    // console.log(`postAuth(${socket.id})`)
     socket.emit(ev.WELCOME, getGameState(socket.client.user))
     socket.on(ev.REACTION, data => {
         if (data && data.emoji) {
@@ -237,10 +260,65 @@ function postAuth(socket, data) {
             }
         }
     })
+    socket.on(ev.REPORT_ENTRY, () => {
+        let user = socket.client.user
+        console.log(`Received entry report from ${user.username}`)
+        if (gameState && currentEntry) {
+            ReportedEntry.findOne({
+                entryId: currentEntry.id
+            }, (err, reportedEntry) => {
+                if (err) {
+                    console.log(`Error: ${err.message}`)
+                    socket.emit(ev.ENTRY_REPORTED_ERROR)
+                    return
+                }
+                if (reportedEntry) {
+                    console.log('Reported entry found in the db, add the user as a reporter')
+                    let previousReports = reportedEntry.reporters.filter(reporter => reporter._id == user.id)
+                    if (previousReports.length > 0) {
+                        console.log('The entry was already reported by the user, ignoring request')
+                        reporters.add(user._id.toString())
+                        socket.emit(ev.ENTRY_REPORTED_OK)
+                    } else {
+                        console.log(`The entry was reported before by other users, adding ${user.username} to reporters`)
+                        reportedEntry.reporters.push(user)
+                        reportedEntry.save(err => {
+                            if (err) {
+                                console.log(`Error: ${err.message}`)
+                                socket.emit(ev.ENTRY_REPORTED_ERROR)
+                                return
+                            }
+                            console.log('Entry reported successfully')
+                            reporters.add(user._id.toString())
+                            socket.emit(ev.ENTRY_REPORTED_OK)
+                        })
+                    }
+                } else {
+                    console.log('This entry wasn\'t reported by anyone else yet, submitting report')
+                    let report = new ReportedEntry()
+                    report.entryId = currentEntry.id
+                    report.category = currentEntry.category ? currentEntry.category.title : undefined
+                    report.clue = currentEntry.question
+                    report.answer = currentEntry.answer
+                    report.reporters = [ user ]
+                    report.save(err => {
+                        if (err) {
+                            console.log(`Error: ${err.message}`)
+                            socket.emit(ev.ENTRY_REPORTED_ERROR)
+                            return
+                        }
+                        console.log('Entry reported successfully')
+                        reporters.add(user._id.toString())
+                        socket.emit(ev.ENTRY_REPORTED_OK)
+                    })
+                }
+            })
+        }
+    })
 }
 
 function disconnect(socket) {
-    console.log(`disconnect(${socket.id})`)
+    // console.log(`disconnect(${socket.id})`)
     let user = socket.client.user
     if (user) {
         user.lastSeen = Date.now()
@@ -299,6 +377,7 @@ function getGameState(user) {
             elapsedSplitSeconds: gameState == GAME_STATE_SPLIT ? splitTimer.getElapsedSeconds() : undefined,
             totalSplitSeconds: gameState == GAME_STATE_SPLIT ? config.splitInterval / 1000 : undefined,
             freeAttemptsLeft: gameState == GAME_STATE_SPLIT ? getFreeAttemptsLeft(user) : undefined,
+            entryReported: reporters.has(user._id.toString()),
             attempts: roundAttempts
         }
     }

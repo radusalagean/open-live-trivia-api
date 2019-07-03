@@ -1,5 +1,5 @@
 import Router from 'express'
-import * as userModel from '../db/model/user'
+import * as userModel from '../model/user'
 import HttpStatus from 'http-status-codes'
 import * as jrh from '../helpers/jsonResponseHelpers'
 import * as auth from '../middleware/authMiddleware'

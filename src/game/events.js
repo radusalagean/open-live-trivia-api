@@ -6,6 +6,7 @@ const DISCONNECT = 'disconnect'
 const JOIN = 'JOIN'
 const ATTEMPT = 'ATTEMPT'
 const REACTION = 'REACTION'
+const REPORT_ENTRY = 'REPORT_ENTRY'
 
 // Sent by the server
 const WELCOME = 'WELCOME'
@@ -16,6 +17,8 @@ const PEER_REACTION = 'PEER_REACTION'
 const ROUND = 'ROUND'
 const SPLIT = 'SPLIT'
 const REVEAL = 'REVEAL'
+const ENTRY_REPORTED_OK = 'ENTRY_REPORTED_OK'
+const ENTRY_REPORTED_ERROR = 'ENTRY_REPORTED_ERROR'
 const PEER_LEFT = 'PEER_LEFT'
 const PEER_TIMEOUT = 'PEER_TIMEOUT'
 
@@ -26,6 +29,7 @@ module.exports = {
     JOIN, 
     ATTEMPT, 
     REACTION,
+    REPORT_ENTRY,
 
     WELCOME, 
     PEER_JOIN, 
@@ -35,6 +39,8 @@ module.exports = {
     ROUND, 
     SPLIT, 
     REVEAL, 
+    ENTRY_REPORTED_OK,
+    ENTRY_REPORTED_ERROR,
     PEER_LEFT,
     PEER_TIMEOUT
 }
