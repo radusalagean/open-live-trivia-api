@@ -3,12 +3,15 @@ import * as userModel from '../model/user'
 import HttpStatus from 'http-status-codes'
 import * as jrh from '../helpers/jsonResponseHelpers'
 import * as auth from '../middleware/authMiddleware'
+import {
+    getPublicUserProjection
+} from '../model/user'
 
 module.exports = () => {
     let api = Router()
 
     api.get('/login', auth.authorizedRequest, (req, res) => {
-        res.json(res.locals.user)
+        res.json(getPublicUserProjection(res.locals.user))
     })
 
     api.post('/register', (req, res) => {
@@ -55,7 +58,7 @@ module.exports = () => {
                             .json(jrh.message(`Error: ${err}`))
                     }
                     return res.status(HttpStatus.CREATED)
-                        .json(user)
+                        .json(getPublicUserProjection(user))
                 })
             })
         })

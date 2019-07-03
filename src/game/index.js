@@ -1,6 +1,9 @@
 import * as ev from './events'
 import * as jservice from '../game/jservice'
 import * as stringHelpers from '../helpers/stringHelpers'
+import { 
+    getPublicUserProjection 
+} from '../model/user'
 import config from '../config'
 import Timer from './timer'
 import ReportedEntry from '../model/reportedEntry'
@@ -208,100 +211,98 @@ function isEntryValid(entry) {
 function postAuth(socket, data) {
     // console.log(`postAuth(${socket.id})`)
     socket.emit(ev.WELCOME, getGameState(socket.client.user))
-    socket.on(ev.REACTION, data => {
-        if (data && data.emoji) {
-            serverSocket.emit(ev.PEER_REACTION, {
-                userId: socket.client.user._id.toString(),
-                username: socket.client.user.username,
-                emoji: data.emoji
+    // Send the game state as soon as the player is authenticated
+    socket.broadcast.emit(ev.PEER_JOIN, {
+        userId: socket.client.user._id.toString(),
+        username: socket.client.user.username
+    })
+    // Handle events coming from the client app
+    socket.on(ev.REACTION, () => { return onReaction(socket, data) })
+    socket.on(ev.ATTEMPT, () => { return onAttempt(socket, data) })
+    socket.on(ev.REPORT_ENTRY, () => { return onReportEntry(socket, data) })
+    socket.on(ev.REQUEST_PLAYER_LIST, () => { return onRequestPlayerList(socket, data) })
+}
+
+// SOCKET EVENT: REACTION
+function onReaction(socket, data) {
+    if (data && data.emoji) {
+        serverSocket.emit(ev.PEER_REACTION, {
+            userId: socket.client.user._id.toString(),
+            username: socket.client.user.username,
+            emoji: data.emoji
+        })
+    }
+}
+
+// SOCKET EVENT: ATTEMPT
+function onAttempt(socket, data) {
+    if (data && data.message && gameState == GAME_STATE_SPLIT) {
+        let roundAttempt
+        let correct = data.message.toLowerCase() == currentEntry.answer.toLowerCase()
+        let user = socket.client.user
+        let initialCoins = user.coins
+        if (data.message.length > config.attemptStringMaxLength) {
+            console.log(`${user.username} sent an attempt that exceeds ${config.attemptStringMaxLength} characters (${data.message.length}). Ignoring attempt`)
+            return
+        }
+        if (!handleAttemptCost(user)) {
+            return
+        }
+        if (correct) {
+            // correct attempt
+            correct = true
+            rewardCurrentPrize(user)
+            if (splitTimer) {
+                splitTimer.stop()
+            }
+            prepareNextRound()
+        }
+        let userId = user._id.toString()
+        roundAttempt = {
+            userId: userId,
+            username: user.username,
+            message: data.message,
+            correct: correct
+        }
+        let pastCount = roundAttemptsCountMap.get(userId) ? 
+            roundAttemptsCountMap.get(userId) : 0
+        roundAttemptsCountMap.set(userId, ++pastCount)
+        roundAttempts.push(roundAttempt)
+        serverSocket.emit(ev.PEER_ATTEMPT, roundAttempt)
+        let coinDiff = user.coins - initialCoins
+        if (coinDiff != 0) {
+            //SEND COIN_DIFF
+            socket.emit(ev.COIN_DIFF, {
+                coinDiff: coinDiff
             })
         }
-    })
-    socket.on(ev.ATTEMPT, data => {
-        if (data && data.message && gameState == GAME_STATE_SPLIT) {
-            let roundAttempt
-            let correct = data.message.toLowerCase() == currentEntry.answer.toLowerCase()
-            let user = socket.client.user
-            let initialCoins = user.coins
-            if (data.message.length > config.attemptStringMaxLength) {
-                console.log(`${user.username} sent an attempt that exceeds ${config.attemptStringMaxLength} characters (${data.message.length}). Ignoring attempt`)
+    }
+}
+
+// SOCKET EVENT: REPORT_ENTRY
+function onReportEntry(socket, data) {
+    let user = socket.client.user
+    console.log(`Received entry report from ${user.username}`)
+    if (gameState && currentEntry) {
+        ReportedEntry.findOne({
+            entryId: currentEntry.id
+        }, (err, reportedEntry) => {
+            if (err) {
+                console.log(`Error: ${err.message}`)
+                socket.emit(ev.ENTRY_REPORTED_ERROR)
                 return
             }
-            if (!handleAttemptCost(user)) {
-                return
-            }
-            if (correct) {
-                // correct attempt
-                correct = true
-                rewardCurrentPrize(user)
-                if (splitTimer) {
-                    splitTimer.stop()
-                }
-                prepareNextRound()
-            }
-            let userId = user._id.toString()
-            roundAttempt = {
-                userId: userId,
-                username: user.username,
-                message: data.message,
-                correct: correct
-            }
-            let pastCount = roundAttemptsCountMap.get(userId) ? 
-                roundAttemptsCountMap.get(userId) : 0
-            roundAttemptsCountMap.set(userId, ++pastCount)
-            roundAttempts.push(roundAttempt)
-            serverSocket.emit(ev.PEER_ATTEMPT, roundAttempt)
-            let coinDiff = user.coins - initialCoins
-            if (coinDiff != 0) {
-                //SEND COIN_DIFF
-                socket.emit(ev.COIN_DIFF, {
-                    coinDiff: coinDiff
-                })
-            }
-        }
-    })
-    socket.on(ev.REPORT_ENTRY, () => {
-        let user = socket.client.user
-        console.log(`Received entry report from ${user.username}`)
-        if (gameState && currentEntry) {
-            ReportedEntry.findOne({
-                entryId: currentEntry.id
-            }, (err, reportedEntry) => {
-                if (err) {
-                    console.log(`Error: ${err.message}`)
-                    socket.emit(ev.ENTRY_REPORTED_ERROR)
-                    return
-                }
-                if (reportedEntry) {
-                    console.log('Reported entry found in the db, add the user as a reporter')
-                    let previousReports = reportedEntry.reporters.filter(reporter => reporter._id == user.id)
-                    if (previousReports.length > 0) {
-                        console.log('The entry was already reported by the user, ignoring request')
-                        reporters.add(user._id.toString())
-                        socket.emit(ev.ENTRY_REPORTED_OK)
-                    } else {
-                        console.log(`The entry was reported before by other users, adding ${user.username} to reporters`)
-                        reportedEntry.reporters.push(user)
-                        reportedEntry.save(err => {
-                            if (err) {
-                                console.log(`Error: ${err.message}`)
-                                socket.emit(ev.ENTRY_REPORTED_ERROR)
-                                return
-                            }
-                            console.log('Entry reported successfully')
-                            reporters.add(user._id.toString())
-                            socket.emit(ev.ENTRY_REPORTED_OK)
-                        })
-                    }
+            if (reportedEntry) {
+                console.log('Reported entry found in the db, add the user as a reporter')
+                let previousReports = reportedEntry.reporters.filter(reporter => reporter._id == user.id)
+                if (previousReports.length > 0) {
+                    console.log('The entry was already reported by the user, ignoring request')
+                    reporters.add(user._id.toString())
+                    socket.emit(ev.ENTRY_REPORTED_OK)
                 } else {
-                    console.log('This entry wasn\'t reported by anyone else yet, submitting report')
-                    let report = new ReportedEntry()
-                    report.entryId = currentEntry.id
-                    report.category = currentEntry.category ? currentEntry.category.title : undefined
-                    report.clue = currentEntry.question
-                    report.answer = currentEntry.answer
-                    report.reporters = [ user ]
-                    report.save(err => {
+                    console.log(`The entry was reported before by other users, adding ${user.username} to reporters`)
+                    reportedEntry.reporters.push(user)
+                    reportedEntry.save(err => {
                         if (err) {
                             console.log(`Error: ${err.message}`)
                             socket.emit(ev.ENTRY_REPORTED_ERROR)
@@ -312,9 +313,58 @@ function postAuth(socket, data) {
                         socket.emit(ev.ENTRY_REPORTED_OK)
                     })
                 }
-            })
+            } else {
+                console.log('This entry wasn\'t reported by anyone else yet, submitting report')
+                let report = new ReportedEntry()
+                report.entryId = currentEntry.id
+                report.category = currentEntry.category ? currentEntry.category.title : undefined
+                report.clue = currentEntry.question
+                report.answer = currentEntry.answer
+                report.reporters = [ user ]
+                report.save(err => {
+                    if (err) {
+                        console.log(`Error: ${err.message}`)
+                        socket.emit(ev.ENTRY_REPORTED_ERROR)
+                        return
+                    }
+                    console.log('Entry reported successfully')
+                    reporters.add(user._id.toString())
+                    socket.emit(ev.ENTRY_REPORTED_OK)
+                })
+            }
+        })
+    }
+}
+
+// SOCKET EVENT: REQUEST_PLAYER_LIST
+function onRequestPlayerList(socket, data) {
+    let userMap = getPlayingUsers()
+    socket.emit(ev.PLAYER_LIST, Array.from(userMap.values()))
+}
+
+function getPlayingUsers() {
+    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    let userMap = new Map()
+    clientSockets.forEach(clientSocket => {
+        let user = clientSocket.client.user
+        if (user) {
+            userMap.set(user._id.toString(), getPublicUserProjection(user))
         }
     })
+    // Sort by user's coins (descending)
+    userMap = new Map([...userMap.entries()].sort((a, b) => b[1].coins - a[1].coins))
+    return userMap
+}
+
+function getPlayingUsersCount() {
+    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    let count = 0
+    clientSockets.forEach(clientSocket => {
+        if (clientSocket.client.user) {
+            count++
+        }
+    })
+    return count
 }
 
 function disconnect(socket) {
@@ -322,6 +372,10 @@ function disconnect(socket) {
     let user = socket.client.user
     if (user) {
         user.lastSeen = Date.now()
+        serverSocket.emit(ev.PEER_LEFT, {
+            userId: socket.client.user._id.toString(),
+            username: user.username
+        })
         // update diff and last seen in db
         user.save(err => {
             if (err) {
@@ -378,6 +432,7 @@ function getGameState(user) {
             totalSplitSeconds: gameState == GAME_STATE_SPLIT ? config.splitInterval / 1000 : undefined,
             freeAttemptsLeft: gameState == GAME_STATE_SPLIT ? getFreeAttemptsLeft(user) : undefined,
             entryReported: reporters.has(user._id.toString()),
+            players: getPlayingUsersCount(),
             attempts: roundAttempts
         }
     }
@@ -386,5 +441,6 @@ function getGameState(user) {
 module.exports = {
     start,
     postAuth,
-    disconnect
+    disconnect,
+    getPlayingUsers
 }

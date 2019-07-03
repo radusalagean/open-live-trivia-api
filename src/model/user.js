@@ -48,9 +48,19 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema)
 
+function getPublicUserProjection(user) {
+    return {
+        _id: user._id,
+        username: user.username,
+        rights: user.rights,
+        coins: user.coins
+    }
+}
+
 module.exports = {
     TYPE_REGULAR,
     TYPE_MODERATOR,
     TYPE_ADMIN,
-    User
+    User,
+    getPublicUserProjection
 }
