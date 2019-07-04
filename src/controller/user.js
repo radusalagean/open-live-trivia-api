@@ -2,10 +2,19 @@ import Router from 'express'
 import * as userModel from '../model/user'
 import HttpStatus from 'http-status-codes'
 import * as jrh from '../helpers/jsonResponseHelpers'
+import * as paginationHelpers from '../helpers/paginationHelpers'
 import * as auth from '../middleware/authMiddleware'
+import config from '../config'
+import { 
+    getPlayingUsers
+ } from '../game'
 import {
     getPublicUserProjection
 } from '../model/user'
+import {
+    generateImage,
+    deleteImage
+} from '../middleware/imageMiddleware'
 
 module.exports = () => {
     let api = Router()
@@ -57,6 +66,10 @@ module.exports = () => {
                         return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                             .json(jrh.message(`Error: ${err}`))
                     }
+                    // Generate profile image
+                    generateImage(user)
+                        .catch(err => console.log(`>> ${err.stack}`))
+                    console.log(`NEW USER REGISTERED: ${user.username}`)
                     return res.status(HttpStatus.CREATED)
                         .json(getPublicUserProjection(user))
                 })
@@ -77,6 +90,8 @@ module.exports = () => {
                 return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .json(jrh.message(`Error: ${err.message}`))
             }
+            deleteImage(user)
+            console.log(`ACCOUNT REMOVED BY USER: ${user.username}`)
             return res.status(HttpStatus.OK)
                 .json(jrh.message('Account removed successfully'))
         })
@@ -132,9 +147,38 @@ module.exports = () => {
                     return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .json(jrh.message(`Error ${err.message}`))
                 }
+                console.log(`USER RIGHTS CHANGE: ${res.locals.user.username} gave ${user.username} level ${rights} rights`)
                 res.status(HttpStatus.OK)
                     .json(jrh.message(`${user.username}'s rights changed to type ${rights}`))
             })
+        })
+    })
+
+    api.get('/leaderboard', auth.authorizedRequest, (req, res) => {
+        userModel.User.countDocuments((err, count) => {
+            if (err) {
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .json(jrh.message(`Error: ${err.message}`))
+            }
+            let perPage = config.usersPerPage
+            let pages = paginationHelpers.getNumOfPages(count, perPage)
+            let page = paginationHelpers.getCurrentPage(req, pages)
+            let playingUsersMap = getPlayingUsers()
+            userModel.User.find({}, 'username rights coins lastSeen', (err, users) => {
+                if (err) {
+                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json(jrh.message(`Error: ${err.message}`))
+                }
+                users.forEach(user => {
+                    user.playing = playingUsersMap.has(user._id.toString())
+                })
+                res.status(HttpStatus.OK)
+                    .json(paginationHelpers.getPaginatedResponse(page, pages, count, perPage, users))
+            })
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .sort({ coins: 1 })
+            .lean()
         })
     })
 

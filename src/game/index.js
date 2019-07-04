@@ -24,8 +24,10 @@ const excludedCharacters = config.excludedCharacters
 const excludedHtmlTags = new RegExp(/<b>|<\/b>|<i>|<\/i>|<u>|<\/u>|<em>|<\/em>/gi)
 
 var serverSocket
-
 var gameState
+var jServiceRetryInterval
+
+// Round vars (reset every round)
 var currentEntry
 var splitTimer
 var roundEndTimer
@@ -43,15 +45,21 @@ function start(socket) {
 }
 
 function requestNewEntry() {
+    if (jServiceRetryInterval) {
+        clearInterval(jServiceRetryInterval)
+        jServiceRetryInterval = undefined
+    }
     if (roundEndTimer) {
         roundEndTimer.stop()
     }
     jservice.requestRandomEntry(err => {
         // onError
-        // TODO Handle
+        console.log(`<!> jService ERROR: ${err.message}`)
+        jServiceRetryInterval = setInterval(requestNewEntry, config.jServiceRetryInterval)
+        return
     }, entry => {
         // onSuccess
-        console.log(entry)
+        // console.log(entry)
         if (!isEntryValid(entry)) {
             console.log('<!> Invalid entry received, requesting another one...')
             requestNewEntry()
@@ -81,7 +89,6 @@ function isEntryBanned(entry, cb) {
     }, (err, entry) => {
         if (err) {
             console.log(`Error: ${err.message}`)
-            // TODO Handle
         }
         cb(entry ? true : false)
     })
@@ -127,7 +134,7 @@ function prepareFirstSplit() {
     currentValue = parseFloat(currentEntry.value.toFixed(2))
     let missingLettersCount = stringHelpers.occurrenceCount(partialAnswer, '_')
     splitValue = parseFloat((currentValue / missingLettersCount).toFixed(2))
-    console.log(`Split: ${partialAnswer} : ${currentValue}`)
+    // console.log(`Split: ${partialAnswer} : ${currentValue}`)
 }
 
 function prepareValue() {
@@ -158,7 +165,7 @@ function nextSplit() {
         chosenIndex, currentEntry.answer.charAt(chosenIndex))
     // Update the value
     currentValue = parseFloat((currentValue - splitValue).toFixed(2))
-    console.log(`Split: ${partialAnswer} : ${currentValue}`)
+    // console.log(`Split: ${partialAnswer} : ${currentValue}`)
     splitTimer = new Timer(areMoreSplitsAvailable() ? nextSplit : reveal, config.splitInterval)
     // SEND SPLIT
     serverSocket.emit(ev.SPLIT, {
@@ -171,7 +178,7 @@ function reveal() {
     if (splitTimer) {
         splitTimer.stop()
     }
-    console.log(`Reveal: ${currentEntry.answer}`)
+    // console.log(`Reveal: ${currentEntry.answer}`)
     prepareNextRound()
     serverSocket.emit(ev.REVEAL, {
         answer: currentEntry.answer
@@ -181,6 +188,7 @@ function reveal() {
 function clearRoundVars() {
     currentEntry = undefined
     splitTimer = undefined
+    roundEndTimer = undefined
     partialAnswer = undefined
     currentValue = undefined
     splitValue = undefined
@@ -217,10 +225,10 @@ function postAuth(socket, data) {
         username: socket.client.user.username
     })
     // Handle events coming from the client app
-    socket.on(ev.REACTION, () => { return onReaction(socket, data) })
-    socket.on(ev.ATTEMPT, () => { return onAttempt(socket, data) })
-    socket.on(ev.REPORT_ENTRY, () => { return onReportEntry(socket, data) })
-    socket.on(ev.REQUEST_PLAYER_LIST, () => { return onRequestPlayerList(socket, data) })
+    socket.on(ev.REACTION, data => onReaction(socket, data))
+    socket.on(ev.ATTEMPT, data => onAttempt(socket, data))
+    socket.on(ev.REPORT_ENTRY, data => onReportEntry(socket, data))
+    socket.on(ev.REQUEST_PLAYER_LIST, data => onRequestPlayerList(socket, data))
 }
 
 // SOCKET EVENT: REACTION
@@ -302,6 +310,7 @@ function onReportEntry(socket, data) {
                 } else {
                     console.log(`The entry was reported before by other users, adding ${user.username} to reporters`)
                     reportedEntry.reporters.push(user)
+                    reportedEntry.lastReported = Date.now()
                     reportedEntry.save(err => {
                         if (err) {
                             console.log(`Error: ${err.message}`)
@@ -401,7 +410,7 @@ function handleAttemptCost(user) {
 function getFreeAttemptsLeft(user) {
     let pastAttempts = roundAttemptsCountMap.get(user._id.toString())
     if (!pastAttempts) {
-        return config.freeAttemptsPerRound;
+        return config.freeAttemptsPerRound
     }
     let diff = config.freeAttemptsPerRound - pastAttempts
     return diff < 0 ? 0 : diff
@@ -438,9 +447,20 @@ function getGameState(user) {
     }
 }
 
+function disconnectEveryone() {
+    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    let disconnectedCount = 0
+    clientSockets.forEach(clientSocket => {
+        clientSocket.disconnect()
+        disconnectedCount++
+    })
+    return disconnectedCount
+}
+
 module.exports = {
     start,
     postAuth,
     disconnect,
-    getPlayingUsers
+    getPlayingUsers,
+    disconnectEveryone
 }

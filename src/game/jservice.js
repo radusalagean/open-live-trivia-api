@@ -1,12 +1,14 @@
 import http from 'http'
 import HttpStatus from 'http-status-codes'
 
+var running
+
 function requestRandomEntry(onError, onSuccess) {
-    console.log('requestRandomEntry')
+    console.log('Requesting random entry...')
     let rawResponse
     let entryArray
     let req = http.request(getOptions, res => {
-        console.log(`response code: ${res.statusCode}`)
+        console.log(`Response code: ${res.statusCode}`)
         res.on('data', data => {
             if (res.statusCode == HttpStatus.OK) {
                 rawResponse = data.toString()
@@ -38,17 +40,24 @@ function requestRandomEntry(onError, onSuccess) {
         res.on('end', () => {
             if (rawResponse) {
                 entryArray = JSON.parse(rawResponse)
+                running = true
                 onSuccess(entryArray[0])
             } else {
+                running = false
                 onError('No response returned')
             }
         })
     })
     req.on('error', err => {
-        console.log(err.message)
+        console.log(`Error: ${err.message}`)
+        running = false
         onError(err)
     })
     req.end()
+}
+
+function isServiceRunning() {
+    return running
 }
 
 const getOptions = {
@@ -59,5 +68,6 @@ const getOptions = {
 }
 
 module.exports = {
-    requestRandomEntry
+    requestRandomEntry,
+    isServiceRunning
 }

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import config from '../config'
 
 const TYPE_REGULAR = 0
 const TYPE_MODERATOR = 1
@@ -7,13 +8,12 @@ const TYPE_ADMIN = 2
 const UserSchema = new mongoose.Schema({
     firebaseUid: {
         type: String,
-        required: true,
-        select: false
+        required: true
     },
     username: {
         type: String,
         required: true,
-        maxlength: 50
+        maxlength: config.usernameMaxLength
     },
     joined: {
         type: Date,
@@ -42,8 +42,10 @@ const UserSchema = new mongoose.Schema({
     coins: {
         type: Number,
         required: true,
-        default: 100
+        default: config.freeStartingCoins
     }
+}, {
+    versionKey: false
 })
 
 const User = mongoose.model('User', UserSchema)

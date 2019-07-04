@@ -2,7 +2,9 @@ import Router from 'express'
 import ReportedEntry from '../model/reportedEntry'
 import HttpStatus from 'http-status-codes'
 import * as jrh from '../helpers/jsonResponseHelpers'
+import * as paginationHelpers from '../helpers/paginationHelpers'
 import * as auth from '../middleware/authMiddleware'
+import config from '../config'
 
 function queryReportedEntry(reportId, res, cb) {
     if (!reportId) {
@@ -34,6 +36,35 @@ function saveEntry(entry, res, cb) {
 
 module.exports = () => {
     let api = Router()
+
+    api.get('/get_reports', auth.authorizedRequest, auth.moderatorRights, (req, res) => {
+        // if the banned query is in the url, narrow the search
+        // otherwise, return all reports
+        let banned = req.query.banned
+        let findCriteria = banned !== undefined ? { banned: banned } : {}
+        ReportedEntry.countDocuments(findCriteria, (err, count) => {
+            if (err) {
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .json(jrh.message(`Error: ${err.message}`))
+            }
+            let perPage = config.reportedEntriesPerPage
+            let pages = paginationHelpers.getNumOfPages(count, perPage)
+            let page = paginationHelpers.getCurrentPage(req, pages)
+            ReportedEntry.find(findCriteria, (err, reportedEntries) => {
+                if (err) {
+                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json(jrh.message(`Error: ${err.message}`))
+                }
+                res.status(HttpStatus.OK)
+                    .json(paginationHelpers.getPaginatedResponse(page, pages, count, perPage, reportedEntries))
+            })
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .sort({ lastReported: -1 })
+            .populate('reporters', 'username')
+        })
+    })
+
     api.put('/ban/:report_id', auth.authorizedRequest, auth.moderatorRights, (req, res) => {
         queryReportedEntry(req.params.report_id, res, entry => {
             if (entry.banned) {
