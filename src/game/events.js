@@ -3,7 +3,6 @@ const CONNECTION = 'connection'
 const DISCONNECT = 'disconnect'
 
 // Sent by the client
-const JOIN = 'JOIN'
 const ATTEMPT = 'ATTEMPT'
 const REACTION = 'REACTION'
 const REPORT_ENTRY = 'REPORT_ENTRY'
@@ -22,13 +21,11 @@ const ENTRY_REPORTED_OK = 'ENTRY_REPORTED_OK'
 const ENTRY_REPORTED_ERROR = 'ENTRY_REPORTED_ERROR'
 const PLAYER_LIST = 'PLAYER_LIST'
 const PEER_LEFT = 'PEER_LEFT'
-// const PEER_TIMEOUT = 'PEER_TIMEOUT'
 
 module.exports = {
     CONNECTION,
     DISCONNECT,
 
-    JOIN, 
     ATTEMPT, 
     REACTION,
     REPORT_ENTRY,
@@ -46,5 +43,4 @@ module.exports = {
     ENTRY_REPORTED_ERROR,
     PLAYER_LIST,
     PEER_LEFT
-    // PEER_TIMEOUT
 }

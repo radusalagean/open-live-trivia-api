@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
   <help_text/>
-  <zoom_level>11</zoom_level>
+  <zoom_level>10</zoom_level>
   <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>957</x>
+      <x>870</x>
       <y>0</y>
-      <w>979</w>
-      <h>1463</h>
+      <w>890</w>
+      <h>1330</h>
     </coordinates>
     <panel_attributes>Server
 valign=top</panel_attributes>
@@ -19,8 +19,8 @@ valign=top</panel_attributes>
     <coordinates>
       <x>0</x>
       <y>0</y>
-      <w>935</w>
-      <h>1463</h>
+      <w>850</w>
+      <h>1330</h>
     </coordinates>
     <panel_attributes>Client
 valign=top</panel_attributes>
@@ -29,10 +29,10 @@ valign=top</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>308</x>
-      <y>44</y>
-      <w>22</w>
-      <h>22</h>
+      <x>280</x>
+      <y>40</y>
+      <w>20</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>type=initial
 bg=red</panel_attributes>
@@ -41,10 +41,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>308</x>
-      <y>55</y>
-      <w>33</w>
-      <h>77</h>
+      <x>280</x>
+      <y>50</y>
+      <w>30</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -52,10 +52,10 @@ bg=red</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>264</x>
-      <y>110</y>
-      <w>110</w>
-      <h>44</h>
+      <x>240</x>
+      <y>100</y>
+      <w>100</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>App starts
 bg=red</panel_attributes>
@@ -64,10 +64,10 @@ bg=red</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>297</x>
-      <y>242</y>
-      <w>44</w>
-      <h>44</h>
+      <x>270</x>
+      <y>220</y>
+      <w>40</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=gray</panel_attributes>
@@ -76,10 +76,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>308</x>
-      <y>143</y>
-      <w>33</w>
-      <h>55</h>
+      <x>280</x>
+      <y>130</y>
+      <w>30</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;30.0;10.0;10.0</additional_attributes>
@@ -87,10 +87,10 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>77</x>
-      <y>341</y>
-      <w>165</w>
-      <h>77</h>
+      <x>70</x>
+      <y>310</y>
+      <w>150</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Display
 Authentication Screen
@@ -100,10 +100,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>143</x>
-      <y>253</y>
-      <w>176</w>
-      <h>110</h>
+      <x>130</x>
+      <y>230</y>
+      <w>160</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [user not found]</panel_attributes>
@@ -112,10 +112,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>330</x>
-      <y>66</y>
-      <w>374</w>
-      <h>220</h>
+      <x>300</x>
+      <y>60</y>
+      <w>340</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [user found]</panel_attributes>
@@ -124,14 +124,14 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>715</x>
-      <y>55</y>
-      <w>198</w>
-      <h>55</h>
+      <x>650</x>
+      <y>50</y>
+      <w>180</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>send authentication
 request
-[idToken]
+[idToken in header]
 type=sender
 bg=orange</panel_attributes>
     <additional_attributes/>
@@ -139,14 +139,14 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>55</y>
-      <w>198</w>
-      <h>55</h>
+      <x>890</x>
+      <y>50</y>
+      <w>180</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>receive authentication
 request
-[idToken]
+[idToken in header]
 type=receiver
 bg=orange</panel_attributes>
     <additional_attributes/>
@@ -154,10 +154,10 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1683</x>
-      <y>121</y>
-      <w>44</w>
-      <h>44</h>
+      <x>1530</x>
+      <y>110</y>
+      <w>40</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=gray</panel_attributes>
@@ -166,10 +166,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1419</x>
-      <y>66</y>
-      <w>308</w>
-      <h>77</h>
+      <x>1290</x>
+      <y>60</y>
+      <w>280</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>260.0;50.0;260.0;10.0;10.0;10.0</additional_attributes>
@@ -177,10 +177,10 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1529</x>
-      <y>286</y>
-      <w>44</w>
-      <h>44</h>
+      <x>1390</x>
+      <y>260</y>
+      <w>40</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=gray</panel_attributes>
@@ -189,10 +189,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1716</x>
-      <y>132</y>
-      <w>209</w>
-      <h>385</h>
+      <x>1560</x>
+      <y>120</y>
+      <w>190</w>
+      <h>350</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [token not found 
@@ -202,10 +202,10 @@ in database]</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1540</x>
-      <y>132</y>
-      <w>165</w>
-      <h>77</h>
+      <x>1400</x>
+      <y>120</y>
+      <w>150</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [token found
@@ -215,10 +215,10 @@ in database]</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1276</x>
-      <y>55</y>
-      <w>154</w>
-      <h>44</h>
+      <x>1160</x>
+      <y>50</y>
+      <w>140</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Check if token
 is in the Database
@@ -228,10 +228,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1166</x>
-      <y>77</y>
-      <w>88</w>
-      <h>33</h>
+      <x>1060</x>
+      <y>70</y>
+      <w>80</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=red</panel_attributes>
@@ -240,10 +240,10 @@ fg=red</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1496</x>
-      <y>187</y>
-      <w>143</w>
-      <h>66</h>
+      <x>1360</x>
+      <y>170</y>
+      <w>130</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>Check if token
 is expired
@@ -254,10 +254,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1540</x>
-      <y>242</y>
-      <w>33</w>
-      <h>66</h>
+      <x>1400</x>
+      <y>220</y>
+      <w>30</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
@@ -265,10 +265,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>374</y>
-      <w>187</w>
-      <h>66</h>
+      <x>890</x>
+      <y>340</y>
+      <w>170</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send authentication
 response
@@ -280,10 +280,10 @@ bg=orange</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1232</x>
-      <y>297</y>
-      <w>352</w>
-      <h>110</h>
+      <x>1120</x>
+      <y>270</y>
+      <w>320</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [token valid]</panel_attributes>
@@ -292,10 +292,10 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1727</x>
-      <y>495</y>
-      <w>187</w>
-      <h>66</h>
+      <x>1570</x>
+      <y>450</y>
+      <w>170</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send verifyIdToken
 (to Firebase Admin)
@@ -306,10 +306,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1562</x>
-      <y>297</y>
-      <w>187</w>
-      <h>253</h>
+      <x>1420</x>
+      <y>270</y>
+      <w>170</w>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [token expired]</panel_attributes>
@@ -318,10 +318,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1716</x>
-      <y>583</y>
-      <w>198</w>
-      <h>66</h>
+      <x>1560</x>
+      <y>530</y>
+      <w>180</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>receive verification
 response
@@ -333,10 +333,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1584</x>
-      <y>594</y>
-      <w>44</w>
-      <h>44</h>
+      <x>1440</x>
+      <y>540</y>
+      <w>40</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=gray</panel_attributes>
@@ -345,10 +345,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1617</x>
-      <y>605</y>
-      <w>121</w>
-      <h>33</h>
+      <x>1470</x>
+      <y>550</y>
+      <w>110</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
@@ -356,10 +356,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1518</x>
-      <y>594</y>
-      <w>88</w>
-      <h>44</h>
+      <x>1380</x>
+      <y>540</y>
+      <w>80</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [OK]</panel_attributes>
@@ -368,10 +368,10 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1210</x>
-      <y>473</y>
-      <w>187</w>
-      <h>44</h>
+      <x>1100</x>
+      <y>430</y>
+      <w>170</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Update token + exp date
 in the database
@@ -381,10 +381,10 @@ bg=pink</panel_attributes>
   <element>
     <id>UMLSyncBarVertical</id>
     <coordinates>
-      <x>1232</x>
-      <y>363</y>
-      <w>22</w>
-      <h>77</h>
+      <x>1120</x>
+      <y>330</y>
+      <w>20</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>template=txt
 title=titletext
@@ -394,10 +394,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1232</x>
-      <y>418</y>
-      <w>99</w>
-      <h>77</h>
+      <x>1120</x>
+      <y>380</y>
+      <w>90</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;70.0;10.0;70.0;50.0</additional_attributes>
@@ -405,10 +405,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1155</x>
-      <y>396</y>
-      <w>110</w>
-      <h>33</h>
+      <x>1050</x>
+      <y>360</y>
+      <w>100</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=red</panel_attributes>
@@ -417,10 +417,10 @@ fg=red</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>671</y>
-      <w>220</w>
-      <h>88</h>
+      <x>890</x>
+      <y>610</y>
+      <w>200</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>send authentication 
 response
@@ -433,10 +433,10 @@ bg=orange</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1232</x>
-      <y>627</y>
-      <w>396</w>
-      <h>132</h>
+      <x>1120</x>
+      <y>570</y>
+      <w>360</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [Not OK]</panel_attributes>
@@ -445,10 +445,10 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1386</x>
-      <y>594</y>
-      <w>143</w>
-      <h>44</h>
+      <x>1260</x>
+      <y>540</y>
+      <w>130</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Check if uid is
 in the Database
@@ -458,10 +458,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1320</x>
-      <y>594</y>
-      <w>44</w>
-      <h>44</h>
+      <x>1200</x>
+      <y>540</y>
+      <w>40</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=gray</panel_attributes>
@@ -470,10 +470,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1353</x>
-      <y>605</y>
-      <w>55</w>
-      <h>33</h>
+      <x>1230</x>
+      <y>550</y>
+      <w>50</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
@@ -481,10 +481,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1331</x>
-      <y>506</y>
-      <w>66</w>
-      <h>110</h>
+      <x>1210</x>
+      <y>460</y>
+      <w>60</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [yes]</panel_attributes>
@@ -493,10 +493,10 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>583</y>
-      <w>187</w>
-      <h>66</h>
+      <x>890</x>
+      <y>530</y>
+      <w>170</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send auth response
 (404 NOT FOUND)
@@ -507,23 +507,22 @@ bg=orange</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1155</x>
-      <y>594</y>
-      <w>187</w>
-      <h>44</h>
+      <x>1050</x>
+      <y>540</y>
+      <w>170</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-[no]
-fg=blue</panel_attributes>
+[no]</panel_attributes>
     <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>704</x>
-      <y>594</y>
-      <w>209</w>
-      <h>44</h>
+      <x>640</x>
+      <y>540</y>
+      <w>190</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>receive user not found
 type=receiver
@@ -533,10 +532,10 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>726</x>
-      <y>693</y>
-      <w>187</w>
-      <h>44</h>
+      <x>660</x>
+      <y>630</y>
+      <w>170</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>receive authentication
 error
@@ -547,10 +546,10 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>429</x>
-      <y>792</y>
-      <w>187</w>
-      <h>77</h>
+      <x>390</x>
+      <y>720</y>
+      <w>170</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Display
 Error Popup
@@ -560,10 +559,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>473</x>
-      <y>572</y>
-      <w>165</w>
-      <h>77</h>
+      <x>430</x>
+      <y>520</y>
+      <w>150</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Display
 Register Screen
@@ -573,10 +572,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>627</x>
-      <y>605</y>
-      <w>99</w>
-      <h>33</h>
+      <x>570</x>
+      <y>550</y>
+      <w>90</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
@@ -584,10 +583,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>649</x>
-      <y>704</y>
-      <w>99</w>
-      <h>132</h>
+      <x>590</x>
+      <y>640</y>
+      <w>90</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;100.0;30.0;100.0;30.0;10.0;70.0;10.0</additional_attributes>
@@ -595,10 +594,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>704</x>
-      <y>385</y>
-      <w>209</w>
-      <h>44</h>
+      <x>640</x>
+      <y>350</y>
+      <w>190</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>receive authentication 
 OK [user]
@@ -609,10 +608,10 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>473</x>
-      <y>374</y>
-      <w>165</w>
-      <h>77</h>
+      <x>430</x>
+      <y>340</y>
+      <w>150</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Display
 Home Screen
@@ -622,10 +621,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>627</x>
-      <y>396</y>
-      <w>99</w>
-      <h>33</h>
+      <x>570</x>
+      <y>360</y>
+      <w>90</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
@@ -633,10 +632,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>484</x>
-      <y>286</y>
-      <w>132</w>
-      <h>44</h>
+      <x>440</x>
+      <y>260</y>
+      <w>120</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Press Sign In
 bg=green</panel_attributes>
@@ -645,10 +644,10 @@ bg=green</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>539</x>
-      <y>506</y>
-      <w>22</w>
-      <h>22</h>
+      <x>490</x>
+      <y>460</y>
+      <w>20</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>type=final
 bg=red</panel_attributes>
@@ -657,10 +656,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>539</x>
-      <y>440</y>
-      <w>33</w>
-      <h>88</h>
+      <x>490</x>
+      <y>400</y>
+      <w>30</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
@@ -668,10 +667,10 @@ bg=red</panel_attributes>
   <element>
     <id>UMLSyncBarVertical</id>
     <coordinates>
-      <x>671</x>
-      <y>55</y>
-      <w>22</w>
-      <h>77</h>
+      <x>610</x>
+      <y>50</y>
+      <w>20</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>template=txt
 title=titletext
@@ -681,10 +680,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>561</x>
-      <y>88</y>
-      <w>143</w>
-      <h>220</h>
+      <x>510</x>
+      <y>80</y>
+      <w>130</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>110.0;10.0;10.0;10.0;10.0;180.0</additional_attributes>
@@ -692,10 +691,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>671</x>
-      <y>77</y>
-      <w>66</w>
-      <h>33</h>
+      <x>610</x>
+      <y>70</y>
+      <w>60</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=red</panel_attributes>
@@ -704,10 +703,10 @@ fg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>231</x>
-      <y>297</y>
-      <w>275</w>
-      <h>88</h>
+      <x>210</x>
+      <y>270</y>
+      <w>250</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>230.0;10.0;120.0;10.0;120.0;60.0;10.0;60.0</additional_attributes>
@@ -715,10 +714,10 @@ fg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>154</x>
-      <y>407</y>
-      <w>297</w>
-      <h>440</h>
+      <x>140</x>
+      <y>370</y>
+      <w>270</w>
+      <h>400</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;380.0;250.0;380.0</additional_attributes>
@@ -726,13 +725,14 @@ fg=red</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>704</x>
-      <y>924</y>
-      <w>209</w>
-      <h>66</h>
+      <x>640</x>
+      <y>840</y>
+      <w>190</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send register request
-[idToken, username]
+[idToken in header]
+[username]
 type=sender
 bg=magenta</panel_attributes>
     <additional_attributes/>
@@ -740,10 +740,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>715</x>
-      <y>209</y>
-      <w>198</w>
-      <h>66</h>
+      <x>650</x>
+      <y>190</y>
+      <w>180</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send authorized
 request
@@ -755,10 +755,10 @@ bg=light_gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>209</y>
-      <w>198</w>
-      <h>66</h>
+      <x>890</x>
+      <y>190</y>
+      <w>180</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>receive authorized
 request
@@ -770,10 +770,10 @@ bg=light_gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>242</x>
-      <y>176</y>
-      <w>154</w>
-      <h>44</h>
+      <x>220</x>
+      <y>160</y>
+      <w>140</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Query Firebase
 for current user
@@ -783,10 +783,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>308</x>
-      <y>209</y>
-      <w>33</w>
-      <h>55</h>
+      <x>280</x>
+      <y>190</y>
+      <w>30</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;30.0;10.0;10.0</additional_attributes>
@@ -794,10 +794,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLSyncBarVertical</id>
     <coordinates>
-      <x>1221</x>
-      <y>55</y>
-      <w>22</w>
-      <h>77</h>
+      <x>1110</x>
+      <y>50</y>
+      <w>20</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>template=txt
 title=titletext
@@ -807,10 +807,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1221</x>
-      <y>66</y>
-      <w>77</w>
-      <h>33</h>
+      <x>1110</x>
+      <y>60</y>
+      <w>70</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>50.0;10.0;10.0;10.0</additional_attributes>
@@ -818,10 +818,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1166</x>
-      <y>110</y>
-      <w>88</w>
-      <h>143</h>
+      <x>1060</x>
+      <y>100</y>
+      <w>80</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=blue</panel_attributes>
@@ -830,10 +830,10 @@ fg=blue</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>308</y>
-      <w>187</w>
-      <h>44</h>
+      <x>890</x>
+      <y>280</y>
+      <w>170</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>send authorized
 response
@@ -844,10 +844,10 @@ bg=light_gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>924</y>
-      <w>198</w>
-      <h>66</h>
+      <x>890</x>
+      <y>840</y>
+      <w>180</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>receive register
 request
@@ -859,10 +859,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1155</x>
-      <y>319</y>
-      <w>110</w>
-      <h>88</h>
+      <x>1050</x>
+      <y>290</y>
+      <w>100</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=blue</panel_attributes>
@@ -871,10 +871,10 @@ fg=blue</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>715</x>
-      <y>308</y>
-      <w>198</w>
-      <h>44</h>
+      <x>650</x>
+      <y>280</y>
+      <w>180</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>receive authorized
 response (OK or error)
@@ -885,10 +885,10 @@ bg=light_gray</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>627</x>
-      <y>319</y>
-      <w>22</w>
-      <h>22</h>
+      <x>570</x>
+      <y>290</y>
+      <w>20</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>type=final
 bg=blue</panel_attributes>
@@ -897,10 +897,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>638</x>
-      <y>319</y>
-      <w>99</w>
-      <h>33</h>
+      <x>580</x>
+      <y>290</y>
+      <w>90</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=blue</panel_attributes>
@@ -909,10 +909,10 @@ fg=blue</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>627</x>
-      <y>231</y>
-      <w>22</w>
-      <h>22</h>
+      <x>570</x>
+      <y>210</y>
+      <w>20</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>type=initial
 bg=blue</panel_attributes>
@@ -921,10 +921,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>638</x>
-      <y>231</y>
-      <w>99</w>
-      <h>33</h>
+      <x>580</x>
+      <y>210</y>
+      <w>90</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=blue</panel_attributes>
@@ -933,10 +933,10 @@ fg=blue</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1232</x>
-      <y>924</y>
-      <w>253</w>
-      <h>66</h>
+      <x>1120</x>
+      <y>840</y>
+      <w>230</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>Check if username is
 in the Database 
@@ -947,10 +947,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLSyncBarVertical</id>
     <coordinates>
-      <x>1232</x>
-      <y>693</y>
-      <w>22</w>
-      <h>77</h>
+      <x>1120</x>
+      <y>630</y>
+      <w>20</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>template=txt
 title=titletext
@@ -960,10 +960,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1188</x>
-      <y>704</y>
-      <w>77</w>
-      <h>33</h>
+      <x>1080</x>
+      <y>640</y>
+      <w>70</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=red</panel_attributes>
@@ -972,10 +972,10 @@ fg=red</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>770</y>
-      <w>209</w>
-      <h>88</h>
+      <x>890</x>
+      <y>700</y>
+      <w>190</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>send authorized
 response
@@ -988,10 +988,10 @@ bg=orange</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1177</x>
-      <y>737</y>
-      <w>88</w>
-      <h>99</h>
+      <x>1070</x>
+      <y>670</y>
+      <w>80</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=blue</panel_attributes>
@@ -1000,10 +1000,10 @@ fg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1166</x>
-      <y>946</y>
-      <w>88</w>
-      <h>33</h>
+      <x>1060</x>
+      <y>860</y>
+      <w>80</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
@@ -1011,10 +1011,10 @@ fg=blue</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>495</x>
-      <y>935</y>
-      <w>132</w>
-      <h>44</h>
+      <x>450</x>
+      <y>850</y>
+      <w>120</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Press Register
 bg=green</panel_attributes>
@@ -1023,10 +1023,10 @@ bg=green</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>396</x>
-      <y>605</y>
-      <w>121</w>
-      <h>374</h>
+      <x>360</x>
+      <y>550</y>
+      <w>110</w>
+      <h>340</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>90.0;320.0;10.0;320.0;10.0;10.0;70.0;10.0</additional_attributes>
@@ -1034,10 +1034,10 @@ bg=green</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>616</x>
-      <y>946</y>
-      <w>110</w>
-      <h>33</h>
+      <x>560</x>
+      <y>860</y>
+      <w>100</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
@@ -1045,10 +1045,10 @@ bg=green</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>693</x>
-      <y>1056</y>
-      <w>220</w>
-      <h>66</h>
+      <x>630</x>
+      <y>960</y>
+      <w>200</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>receive register response
 (Error)
@@ -1059,10 +1059,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1353</x>
-      <y>1067</y>
-      <w>44</w>
-      <h>44</h>
+      <x>1230</x>
+      <y>970</y>
+      <w>40</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=gray</panel_attributes>
@@ -1071,10 +1071,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1364</x>
-      <y>979</y>
-      <w>33</w>
-      <h>110</h>
+      <x>1240</x>
+      <y>890</y>
+      <w>30</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
@@ -1082,10 +1082,10 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>1056</y>
-      <w>264</w>
-      <h>66</h>
+      <x>890</x>
+      <y>960</y>
+      <w>240</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send register response
 (409 CONFLICT)
@@ -1097,10 +1097,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>1243</y>
-      <w>220</w>
-      <h>66</h>
+      <x>890</x>
+      <y>1130</y>
+      <w>200</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send register response
 (201 CREATED)
@@ -1112,10 +1112,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1232</x>
-      <y>1067</y>
-      <w>143</w>
-      <h>44</h>
+      <x>1120</x>
+      <y>970</y>
+      <w>130</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [yes]</panel_attributes>
@@ -1124,10 +1124,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1727</x>
-      <y>1056</y>
-      <w>187</w>
-      <h>66</h>
+      <x>1570</x>
+      <y>960</y>
+      <w>170</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send verifyIdToken
 (to Firebase Admin)
@@ -1138,10 +1138,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1716</x>
-      <y>1144</y>
-      <w>198</w>
-      <h>66</h>
+      <x>1560</x>
+      <y>1040</y>
+      <w>180</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>receive verification
 response
@@ -1153,10 +1153,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1386</x>
-      <y>1067</y>
-      <w>363</w>
-      <h>44</h>
+      <x>1260</x>
+      <y>970</y>
+      <w>330</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [no]</panel_attributes>
@@ -1165,10 +1165,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1639</x>
-      <y>1166</y>
-      <w>99</w>
-      <h>33</h>
+      <x>1490</x>
+      <y>1060</y>
+      <w>90</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
@@ -1176,10 +1176,10 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1606</x>
-      <y>1155</y>
-      <w>44</w>
-      <h>44</h>
+      <x>1460</x>
+      <y>1050</y>
+      <w>40</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=gray</panel_attributes>
@@ -1188,10 +1188,10 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>1144</y>
-      <w>264</w>
-      <h>66</h>
+      <x>890</x>
+      <y>1040</y>
+      <w>240</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send register response
 (409 CONFLICT)
@@ -1203,10 +1203,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1408</x>
-      <y>1155</y>
-      <w>143</w>
-      <h>44</h>
+      <x>1280</x>
+      <y>1050</y>
+      <w>130</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Check if uid is
 in the Database
@@ -1216,10 +1216,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1540</x>
-      <y>1155</y>
-      <w>88</w>
-      <h>44</h>
+      <x>1400</x>
+      <y>1050</y>
+      <w>80</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [OK]</panel_attributes>
@@ -1228,10 +1228,10 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1188</x>
-      <y>1188</y>
-      <w>462</w>
-      <h>220</h>
+      <x>1080</x>
+      <y>1080</y>
+      <w>420</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [Not OK]</panel_attributes>
@@ -1240,10 +1240,10 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>979</x>
-      <y>1353</y>
-      <w>220</w>
-      <h>66</h>
+      <x>890</x>
+      <y>1230</y>
+      <w>200</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>send register response
 (401 UNAUTHORIZED)
@@ -1255,10 +1255,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>1320</x>
-      <y>1155</y>
-      <w>44</w>
-      <h>44</h>
+      <x>1200</x>
+      <y>1050</y>
+      <w>40</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=gray</panel_attributes>
@@ -1267,10 +1267,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1353</x>
-      <y>1166</y>
-      <w>77</w>
-      <h>33</h>
+      <x>1230</x>
+      <y>1060</y>
+      <w>70</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;50.0;10.0</additional_attributes>
@@ -1278,10 +1278,10 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1232</x>
-      <y>1155</y>
-      <w>110</w>
-      <h>44</h>
+      <x>1120</x>
+      <y>1050</y>
+      <w>100</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [yes]</panel_attributes>
@@ -1290,10 +1290,10 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>1254</x>
-      <y>1254</y>
-      <w>187</w>
-      <h>44</h>
+      <x>1140</x>
+      <y>1140</y>
+      <w>170</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Create user
 in the database
@@ -1303,10 +1303,10 @@ bg=pink</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1331</x>
-      <y>1188</y>
-      <w>55</w>
-      <h>88</h>
+      <x>1210</x>
+      <y>1080</y>
+      <w>50</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 [no]</panel_attributes>
@@ -1315,10 +1315,10 @@ bg=pink</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1188</x>
-      <y>1265</y>
-      <w>88</w>
-      <h>33</h>
+      <x>1080</x>
+      <y>1150</y>
+      <w>80</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
@@ -1326,10 +1326,10 @@ bg=pink</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>671</x>
-      <y>1243</y>
-      <w>242</w>
-      <h>66</h>
+      <x>610</x>
+      <y>1130</y>
+      <w>220</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>receive register response
 (OK) [user]
@@ -1340,10 +1340,10 @@ bg=magenta</panel_attributes>
   <element>
     <id>UMLSyncBarVertical</id>
     <coordinates>
-      <x>649</x>
-      <y>792</y>
-      <w>22</w>
-      <h>77</h>
+      <x>590</x>
+      <y>720</y>
+      <w>20</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>template=txt
 title=titletext
@@ -1353,10 +1353,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>649</x>
-      <y>847</y>
-      <w>66</w>
-      <h>264</h>
+      <x>590</x>
+      <y>770</y>
+      <w>60</w>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;30.0;10.0;30.0;220.0;40.0;220.0</additional_attributes>
@@ -1364,10 +1364,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>605</x>
-      <y>825</y>
-      <w>77</w>
-      <h>33</h>
+      <x>550</x>
+      <y>750</y>
+      <w>70</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;50.0;10.0</additional_attributes>
@@ -1375,10 +1375,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>352</x>
-      <y>396</y>
-      <w>341</w>
-      <h>902</h>
+      <x>320</x>
+      <y>360</y>
+      <w>310</w>
+      <h>820</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>110.0;10.0;10.0;10.0;10.0;800.0;290.0;800.0</additional_attributes>

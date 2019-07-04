@@ -5,7 +5,7 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>640</x>
+      <x>650</x>
       <y>180</y>
       <w>530</w>
       <h>500</h>
@@ -17,7 +17,7 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>700</x>
+      <x>710</x>
       <y>250</y>
       <w>120</w>
       <h>40</h>
@@ -28,7 +28,7 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>1010</x>
+      <x>1020</x>
       <y>250</y>
       <w>120</w>
       <h>40</h>
@@ -39,7 +39,7 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
+      <x>820</x>
       <y>250</y>
       <w>220</w>
       <h>40</h>
@@ -51,7 +51,7 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>690</x>
+      <x>700</x>
       <y>580</y>
       <w>150</w>
       <h>40</h>
@@ -62,7 +62,7 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>390</x>
       <y>260</y>
       <w>340</w>
       <h>80</h>
@@ -73,7 +73,7 @@ halign=left</panel_attributes>
   <element>
     <id>UMLHierarchy</id>
     <coordinates>
-      <x>320</x>
+      <x>330</x>
       <y>290</y>
       <w>200</w>
       <h>260</h>
@@ -88,7 +88,7 @@ User
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
+      <x>450</x>
       <y>500</y>
       <w>270</w>
       <h>120</h>
@@ -99,7 +99,7 @@ User
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>700</x>
+      <x>710</x>
       <y>320</y>
       <w>120</w>
       <h>40</h>
@@ -110,7 +110,7 @@ User
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>390</x>
       <y>310</y>
       <w>340</w>
       <h>50</h>
@@ -121,7 +121,7 @@ User
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>1010</x>
+      <x>1020</x>
       <y>320</y>
       <w>120</w>
       <h>50</h>
@@ -133,7 +133,7 @@ entry</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
+      <x>820</x>
       <y>320</y>
       <w>220</w>
       <h>40</h>
@@ -145,7 +145,7 @@ entry</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>700</x>
+      <x>710</x>
       <y>380</y>
       <w>120</w>
       <h>40</h>
@@ -156,7 +156,7 @@ entry</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>390</x>
       <y>310</y>
       <w>340</w>
       <h>110</h>
@@ -167,7 +167,7 @@ entry</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>700</x>
+      <x>710</x>
       <y>500</y>
       <w>120</w>
       <h>60</h>
@@ -179,7 +179,7 @@ reported entries</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>470</x>
+      <x>480</x>
       <y>440</y>
       <w>250</w>
       <h>100</h>
@@ -190,7 +190,7 @@ reported entries</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
+      <x>450</x>
       <y>490</y>
       <w>280</w>
       <h>50</h>
@@ -201,31 +201,30 @@ reported entries</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>700</x>
+      <x>710</x>
       <y>430</y>
-      <w>120</w>
+      <w>150</w>
       <h>50</h>
     </coordinates>
-    <panel_attributes>Request player 
-list</panel_attributes>
+    <panel_attributes>Request leaderboard</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>390</x>
       <y>310</y>
-      <w>350</w>
+      <w>340</w>
       <h>150</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;330.0;130.0</additional_attributes>
+    <additional_attributes>10.0;10.0;320.0;130.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>1010</x>
-      <y>480</y>
+      <x>1020</x>
+      <y>460</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -235,20 +234,20 @@ list</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>800</x>
-      <y>480</y>
+      <x>810</x>
+      <y>470</y>
       <w>230</w>
-      <h>50</h>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>210.0;20.0;10.0;30.0</additional_attributes>
+    <additional_attributes>210.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>1010</x>
-      <y>540</y>
+      <x>1020</x>
+      <y>560</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -258,13 +257,36 @@ list</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>800</x>
-      <y>530</y>
+      <x>810</x>
+      <y>540</y>
       <w>230</w>
-      <h>50</h>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>210.0;30.0;10.0;20.0</additional_attributes>
+    <additional_attributes>210.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1020</x>
+      <y>510</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Unban entry</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>510</y>
+      <w>220</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>
