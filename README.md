@@ -52,7 +52,7 @@ In the documentation, certain attributes displayed with a colon in the beginning
 ### Client `📣` -> `🎧` Server events
 | **Event**| **Description**|
 |----------|----------------|
-| `authenticate`|The first event sent by the client after socket connection. Pass the Firebase idToken in order to authenticate.|
+| `authentication`|The first event sent by the client after socket connection. Pass the Firebase idToken in order to authenticate.|
 | `ATTEMPT`|An attempt to submit the correct answer for the ongoing round|
 | `REACTION`|An emoji that will broadcast to all the current players|
 | `REPORT_ENTRY`|Report the ongoing entry of this round for further review by moderators or admin|
@@ -61,7 +61,7 @@ In the documentation, certain attributes displayed with a colon in the beginning
 **Note:** Events written in *CAPS* are game-specific events.
 
 - Example bodies:
-  - `authenticate`:
+  - `authentication`:
   ```json
   {
     "idToken": "YOUR_ID_TOKEN"
