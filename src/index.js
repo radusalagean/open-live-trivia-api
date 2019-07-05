@@ -27,7 +27,9 @@ app.use('/open-live-trivia-api/v1/', routes)
 const server = http.createServer(app)
 
 // Socket.io
-const serverSocket = io(server)
+const serverSocket = io(server, {
+    path: '/open-live-trivia-api/socket.io'
+})
 
 server.listen(config.port, () => {
     console.log(`Server is listening on port ${config.port}`)
