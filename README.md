@@ -42,9 +42,11 @@ Base URL: `https://releasetracker.app/open-live-trivia-api/v1/`
 
 For requests marked as `🔒`, you need to have the `Authorization` header set with your Firebase `idToken`.
 
+For requests marked as `🗐`, the results will be paginated and pagination-specific query string can be passed to specify the `page` number. Example: `https://releasetracker.app/open-live-trivia-api/v1/user/leaderboard?page=2`.
+
 For all POST / PUT requests that have a json body provided, you need to set the `application/json` value for the `Content-Type` header.
 
-In the documentation, certain attributes displayed with a colon in the begining (e.g. `:id`) need to be replaced with a corresponding value when you are making the call.
+In the documentation, certain attributes displayed with a colon in the beginning (e.g. `:id`) need to be replaced with a corresponding value when you are making the call.
 
 ## Socket-based events `🔌`
 ### Client `📣` -> `🎧` Server events
@@ -200,3 +202,207 @@ In the documentation, certain attributes displayed with a colon in the begining 
       "username": "Radu" 
     }
     ```
+    
+## Users `👤`
+### Register `🔒`
+**[<code>POST</code> user/register](https://releasetracker.app/open-live-trivia-api/v1/user/register)**
+
+Request Body Parameters:
+- `username` - *String* (required)
+
+Example Request Body:
+```json
+{
+  "username": "Radu"
+}
+```
+Example Response Body **`201 CREATED`**:
+```json
+{
+  "_id": "5d1f2052a93b8d38b87750d3",
+  "username": "Radu",
+  "rights": 0,
+  "coins": 100
+}
+```
+
+Specific restrictions:
+- Max username length: 50 characters
+- Usernames must be unique (otherwise, `409 CONFLICT` will be returned)
+- Usernames are considered unique on a case insensitive basis (e.g. if `Radu` is registered, trying to register `radu` will result in a conflict error)
+- Note: spaces are allowed in usernames
+
+### Login `🔒`
+**[<code>POST</code> user/login](https://releasetracker.app/open-live-trivia-api/v1/user/login)**
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "_id": "5d1f2052a93b8d38b87750d3",
+  "username": "Radu",
+  "rights": 0,
+  "coins": 100
+}
+```
+
+### Delete user `🔒`
+**[<code>DELETE</code> user/delete](https://releasetracker.app/open-live-trivia-api/v1/user/delete)**
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "message": "Account removed successfully"
+}
+```
+Specific restrictions:
+- Admins are not allowed to remove their accounts
+
+### Username availability
+**[<code>GET</code> user/availability/:username](https://releasetracker.app/open-live-trivia-api/v1/user/availability/radu)**
+
+Request URL parameters:
+- `username` - candidate username (required)
+
+Response codes: 
+- **`200 OK`** - Username is available for registration
+- **`409 CONFLICT`** - Username is unavailable for registration
+
+### Update user rights `🔒 ADMIN`
+**[<code>PUT</code> user/rights/:user_id/:rights_level](https://releasetracker.app/open-live-trivia-api/v1//user/rights/5d18a18aa12e471d24085d2e/1)**
+
+Request URL parameters:
+- `user_id` - the id of the target user (required)
+- `rights_level` - one of the following values: (required)
+  - `0` - *Regular*
+  - `1` - *Moderator*
+  - `2` - *Admin*
+  
+Example Response Body **`200 OK`**:
+```json
+{
+  "message": "Chad's rights changed to type 1"
+}
+```
+
+### Leaderboard `🔒` `🗐`
+**[<code>GET</code> user/leaderboard](https://releasetracker.app/open-live-trivia-api/v1/user/leaderboard)**
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "page": 1,
+  "pages": 1,
+  "itemsCount": 1,
+  "perPage": 20,
+  "items": [
+    {
+      "_id": "5d1f2968a93b8d38b87750d4",
+      "rights": 2,
+      "coins": 100,
+      "lastSeen": "2019-07-05T10:41:44.203Z",
+      "username": "Radu",
+      "playing": true
+    }
+  ]
+}
+```
+
+## Entry reports `🚩`
+### Query reports `🔒 MODERATOR / ADMIN` `🗐`
+**[<code>GET</code> reported_entry/get_reports](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/get_reports)**
+
+Request URL query string parameters:
+- `banned` - *Boolean* (optional)
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "page": 1,
+  "pages": 1,
+  "itemsCount": 1,
+  "perPage": 10,
+  "items": [
+    {
+      "reporters": [
+        {
+          "_id": "5d1f2968a93b8d38b87750d4",
+          "username": "Radu"
+        }
+      ],
+      "banned": false,
+      "_id": "5d1f379a78c6e7342c49488e",
+      "lastReported": "2019-07-05T11:42:18.216Z",
+      "entryId": 34770,
+      "category": "life science",
+      "clue": "The monera kingdom consists of bacteria & the blue-green species of this",
+      "answer": "Algae"
+    }
+  ]
+}
+```
+
+### Ban reported entry `🔒 MODERATOR / ADMIN`
+**[<code>PUT</code> reported_entry/ban/:report_id](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/ban/5d1f379a78c6e7342c49488e)**
+
+Request URL parameters:
+- `report_id` - the id of the target report (required)
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "message": "The entry has been banned successfully"
+}
+```
+
+### Unban reported entry `🔒 MODERATOR / ADMIN`
+**[<code>PUT</code> reported_entry/unban/:report_id](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/unban/5d1f379a78c6e7342c49488e)**
+
+Request URL parameters:
+- `report_id` - the id of the target report (required)
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "message": "The entry has been unbanned successfully"
+}
+```
+
+### Dismiss reported entry `🔒 MODERATOR / ADMIN`
+**[<code>PUT</code> reported_entry/dismiss/:report_id](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/dismiss/5d1f379a78c6e7342c49488e)**
+
+Request URL parameters:
+- `report_id` - the id of the target report (required)
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "message": "Entry report dismissed successfully"
+}
+```
+
+## System `⚙️`
+### Disconnect everyone `🔒 ADMIN`
+**[<code>POST</code> system/disconnect_everyone](https://releasetracker.app/open-live-trivia-api/v1/system/disconnect_everyone)**
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "message": "Sent the disconnect signal to 10 clients"
+}
+```
+
+### Info
+**[<code>GET</code> system/info](https://releasetracker.app/open-live-trivia-api/v1/system/info)**
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "serverVersion": "0.0.1",
+  "minAppVersionCode": 1,
+  "isTriviaServiceRunning": true
+}
+```
+
+## License
+
+Apache License 2.0, see the [LICENSE](LICENSE) file for details.
