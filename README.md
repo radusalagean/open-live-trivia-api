@@ -48,7 +48,14 @@ For all POST / PUT requests that have a json body provided, you need to set the 
 
 In the documentation, certain attributes displayed with a colon in the beginning (e.g. `:id`) need to be replaced with a corresponding value when you are making the call.
 
+**Profile image access url:**
+`https://releasetracker.app/open-live-trivia-api-static/user-thumbnails/:filename`, where:
+- `filename` = `userId` + `.png`
+
+Example: `https://releasetracker.app/open-live-trivia-api-static/user-thumbnails/5d1f77e3adc09e1fe5a9aa9e.png`
+
 ## Socket-based events `🔌`
+**Access url:** `https://releasetracker.app/open-live-trivia-api/socket.io`
 ### Client `📣` -> `🎧` Server events
 | **Event**| **Description**|
 |----------|----------------|
@@ -82,8 +89,8 @@ In the documentation, certain attributes displayed with a colon in the beginning
   **Note:** The events not listed in the examples above don't require request bodies.
   
 ### Server `📣` -> `🎧` Client events
-  | **Event**| **Description**|
-  |----------|----------------|
+  |**Event**| **Description**|
+  |---------|----------------|
   |`authenticated`|Sent to the client which authenticated successfully|
   |`unauthorized`|Sent to the client which failed to authenticate|
   |`WELCOME`|The first event sent by the server when a client is connected and authenticated|
