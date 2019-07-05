@@ -17,7 +17,8 @@ function getCurrentPage(req, pages) {
 }
 
 function getNumOfPages(itemsCount, perPage) {
-    return Math.ceil(itemsCount / perPage)
+    let pages = Math.ceil(itemsCount / perPage)
+    return pages > 0 ? pages : 1
 }
 
 module.exports = {
