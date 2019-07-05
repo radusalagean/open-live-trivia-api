@@ -217,6 +217,10 @@ function isEntryValid(entry) {
 }
 
 function postAuth(socket, data) {
+    if (socket.client.initialized) {
+        console.log(`${socket.client.user.username} attempted to double-authenticate, ignoring request...`)
+        return
+    }
     // console.log(`postAuth(${socket.id})`)
     socket.emit(ev.WELCOME, getGameState(socket.client.user))
     // Send the game state as soon as the player is authenticated
@@ -229,6 +233,7 @@ function postAuth(socket, data) {
     socket.on(ev.ATTEMPT, data => onAttempt(socket, data))
     socket.on(ev.REPORT_ENTRY, data => onReportEntry(socket, data))
     socket.on(ev.REQUEST_PLAYER_LIST, data => onRequestPlayerList(socket, data))
+    socket.client.initialized = true
 }
 
 // SOCKET EVENT: REACTION
