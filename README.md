@@ -36,3 +36,57 @@ The communication of game-specific events between the server and the client is b
 
 ![Activity Diagram for the Game](diagrams/game-activity.png)
 [View the full resolution version](https://raw.githubusercontent.com/radusalagean/open-live-trivia-api/master/diagrams/game-activity.png)
+
+## Usage
+
+### Socket-based events
+#### Client -> Server events
+| **Event**| **Description**|
+|----------|----------------|
+| `authenticate`| The first event sent by the client after socket connection. Pass the Firebase idToken in order to authenticate.|
+| `ATTEMPT`| An attempt to submit the correct answer for the ongoing round|
+| `REACTION`| An emoji that will broadcast to all the current players|
+| `REPORT_ENTRY`|Report the ongoing entry of this round for further review by moderators or admin|
+| `REQUEST_PLAYER_LIST`|Request the list of currently playing users|
+
+**Note:** Events written in CAPS are game-specific events.
+
+- Example Request Bodies:
+  - `authenticate`:
+  ```json
+  {
+    "idToken": "YOUR_ID_TOKEN"
+  }
+  ```
+  
+  - `ATTEMPT`:
+  ```json
+  {
+    "message": "Funcrusher Plus"
+  }
+  ```
+  
+  - `REACTION`
+  ```json
+  {
+    "emoji": "😇"
+  }
+  ```
+  
+  **Note:** Events without request examples don't require request bodies.
+  
+#### Server -> Client events
+  | **Event**| **Description**|
+  |----------|----------------|
+  |`WELCOME`|The first event sent by the server when a client is connected and authenticated|
+  |`PEER_JOIN`|Broadcasted to all connected clients when a new client is connected and successfully authenticated|
+  |`PEER_ATTEMPT`|Broadcasted to all connected clients when a client sent an attempt to the server|
+  |`COIN_DIFF`|Sent to the client who previously sent an attempt if there was a change in his coin bank (like the price paid for the attempt and / or the reward received for the correct answer)|
+  |`PEER_REACTION`|Broadcasted to all connected clients when a client sent a reaction to the server|
+  |`ROUND`|Broadcasted to all connected clients when a new round starts|
+  |`SPLIT`|Broadcasted to all connected clients when a new split starts|
+  |`REVEAL`|Broadcasted to all connected clients when the last split finishes and no one submitted the right answer|
+  |`ENTRY_REPORTED_OK`|Sent to the client who previously reported an entry, if the entry report was saved successfully|
+  |`ENTRY_REPORTED_ERROR`|Sent to the client who previously reported an entry, if the entry report failed to save|
+  |`PLAYER_LIST`|Sent to the client who previously requested a list of all the current players|
+  |`PEER_LEFT`|Broadcasted to all connected clients when a client left the game session|
