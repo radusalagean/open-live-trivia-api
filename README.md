@@ -38,46 +38,52 @@ The communication of game-specific events between the server and the client is b
 [View the full resolution version](https://raw.githubusercontent.com/radusalagean/open-live-trivia-api/master/diagrams/game-activity.png)
 
 ## Usage
+Base URL: `https://releasetracker.app/open-live-trivia-api/v1/`
 
-### Socket-based events
-#### Client -> Server events
+For requests marked as `🔒`, you need to have the `Authorization` header set with your Firebase `idToken`.
+
+For all POST / PUT requests that have a json body provided, you need to set the `application/json` value for the `Content-Type` header.
+
+In the documentation, certain attributes displayed with a colon in the begining (e.g. `:id`) need to be replaced with a corresponding value when you are making the call.
+
+## Socket-based events `🔌`
+### Client `📣` -> `🎧` Server events
 | **Event**| **Description**|
 |----------|----------------|
-| `authenticate`| The first event sent by the client after socket connection. Pass the Firebase idToken in order to authenticate.|
-| `ATTEMPT`| An attempt to submit the correct answer for the ongoing round|
-| `REACTION`| An emoji that will broadcast to all the current players|
+| `authenticate`|The first event sent by the client after socket connection. Pass the Firebase idToken in order to authenticate.|
+| `ATTEMPT`|An attempt to submit the correct answer for the ongoing round|
+| `REACTION`|An emoji that will broadcast to all the current players|
 | `REPORT_ENTRY`|Report the ongoing entry of this round for further review by moderators or admin|
 | `REQUEST_PLAYER_LIST`|Request the list of currently playing users|
 
-**Note:** Events written in CAPS are game-specific events.
+**Note:** Events written in *CAPS* are game-specific events.
 
-- Example Request Bodies:
+- Example bodies:
   - `authenticate`:
   ```json
   {
     "idToken": "YOUR_ID_TOKEN"
   }
   ```
-  
   - `ATTEMPT`:
   ```json
   {
     "message": "Funcrusher Plus"
   }
   ```
-  
   - `REACTION`
   ```json
   {
     "emoji": "😇"
   }
   ```
+  **Note:** The events not listed in the examples above don't require request bodies.
   
-  **Note:** Events without request examples don't require request bodies.
-  
-#### Server -> Client events
+### Server `📣` -> `🎧` Client events
   | **Event**| **Description**|
   |----------|----------------|
+  |`authenticated`|Sent to the client which authenticated successfully|
+  |`unauthorized`|Sent to the client which failed to authenticate|
   |`WELCOME`|The first event sent by the server when a client is connected and authenticated|
   |`PEER_JOIN`|Broadcasted to all connected clients when a new client is connected and successfully authenticated|
   |`PEER_ATTEMPT`|Broadcasted to all connected clients when a client sent an attempt to the server|
@@ -90,3 +96,107 @@ The communication of game-specific events between the server and the client is b
   |`ENTRY_REPORTED_ERROR`|Sent to the client who previously reported an entry, if the entry report failed to save|
   |`PLAYER_LIST`|Sent to the client who previously requested a list of all the current players|
   |`PEER_LEFT`|Broadcasted to all connected clients when a client left the game session|
+  
+  - Examples bodies:
+    - `unauthorized`:
+    ```json
+    {
+      "message": "User id not found for the specified token, you need to register first"
+    }
+    ```
+    - `WELCOME`
+    ```json
+    {
+      "gameState": 1,
+      "userCoins": 100,
+      "entryId": 121885,
+      "category": "we governed that state",
+      "clue": "Pat Brown,Pete Wilson",
+      "answer": "C____o___a",
+      "currentValue": 14,
+      "elapsedSplitSeconds": 7,
+      "totalSplitSeconds": 15,
+      "freeAttemptsLeft": 2,
+      "entryReported": false,
+      "players": 1,
+      "attempts": [
+        {
+          "userId": "5d1f2052a93b8d38b87750d3",
+          "username": "Radu",
+          "message": "test attempt",
+          "correct": false
+        }
+      ]
+    }
+    ```
+    - `PEER_JOIN`
+    ```json
+    {
+      "userId": "5d1f2052a93b8d38b87750d3",
+      "username": "Radu"
+    }
+    ```
+    - `PEER_ATTEMPT`
+    ```json
+    {
+      "userId": "5d1f2052a93b8d38b87750d3",
+      "username": "Radu",
+      "message": "test attempt",
+      "correct": false
+    }
+    ```
+    - `COIN_DIFF`
+    ```json
+    {
+      "coinDiff": 6
+    }
+    ```
+    - `PEER_REACTION`
+    ```json
+    {
+      "userId": "5d1f2052a93b8d38b87750d3",
+      "username": "Radu",
+      "emoji": "👾"
+    }
+    ```
+    - `ROUND`
+    ```json
+    {
+      "entryId": 121885,
+      "category": "we governed that state",
+      "clue": "Pat Brown,Pete Wilson",
+      "answer": "__________",
+      "currentValue": 20
+    }
+    ```
+    - `SPLIT`
+    ```json
+    {
+      "answer": "C_li_ornia",
+      "currentValue": 4
+    }
+    ```
+    - `REVEAL`
+    ```json
+    {
+      "answer": "California"
+    }
+    ```
+    - `PLAYER_LIST`
+    ```json
+    [
+      {
+        "_id": "5d1f2052a93b8d38b87750d3",
+        "username": "Radu",
+        "rights": 0,
+        "coins": 106
+      }
+    ]
+    ```
+    - `PLAYER_LEFT`
+    ```json
+    {
+      "userId": "5d1f2052a93b8d38b87750d3",
+      "username": "Radu" 
+    }
+    ```
