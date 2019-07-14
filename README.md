@@ -202,7 +202,7 @@ Example: `https://releasetracker.app/open-live-trivia-api-static/user-thumbnails
       }
     ]
     ```
-    - `PLAYER_LEFT`
+    - `PEER_LEFT`
     ```json
     {
       "userId": "5d1f2052a93b8d38b87750d3",
