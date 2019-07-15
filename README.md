@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/radusalagean/open-live-trivia-app-android.svg?branch=master)](https://travis-ci.org/radusalagean/open-live-trivia-app-android)
+[![Build Status](https://travis-ci.org/radusalagean/open-live-trivia-api.svg?branch=master)](https://travis-ci.org/radusalagean/open-live-trivia-api)
 # open-live-trivia-api
 **Open Live Trivia** is an open-source multiplayer trivia game. This repo hosts the server-side part of the project. For the corresponding client app, please check [this](https://github.com/radusalagean/open-live-trivia-app-android) link.
 
