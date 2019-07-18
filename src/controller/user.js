@@ -19,7 +19,7 @@ import {
 module.exports = () => {
     let api = Router()
 
-    api.get('/login', auth.authorizedRequest, (req, res) => {
+    api.post('/login', auth.authorizedRequest, (req, res) => {
         res.json(getPublicUserProjection(res.locals.user))
     })
 

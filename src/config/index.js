@@ -4,7 +4,8 @@ export default {
     'mongoUrl': 'mongodb://localhost:27017/open-live-trivia-api', // The database url
     'bodyLimit': '100kb', // Max size of request bodies accepted
     'minAppVersionCode': 1, // The minimum version code of the client app (check on the app and show "update app" dialog if required)
-    'usernameMaxLength': 50, // Max number of characters allowed for an username
+    'usernameMinLength': 4, // Min number of characters allowed for a username
+    'usernameMaxLength': 50, // Max number of characters allowed for a username
     'freeStartingCoins': 100, // Free coins awarded upon account registration
     'userThumbnailSize': 150, // Max user thumbnail size, in px (will be applied to width and height)
     'publicRootDirectory': 'public', // The publicly accessible directory for static content

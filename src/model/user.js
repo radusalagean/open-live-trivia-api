@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
+        minlength: config.usernameMinLength,
         maxlength: config.usernameMaxLength
     },
     joined: {
