@@ -275,7 +275,8 @@ function onAttempt(socket, data) {
             userId: userId,
             username: user.username,
             message: data.message,
-            correct: correct
+            correct: correct,
+            correctAnswer: currentEntry.answer
         }
         let pastCount = roundAttemptsCountMap.get(userId) ? 
             roundAttemptsCountMap.get(userId) : 0
@@ -443,7 +444,7 @@ function getGameState(user) {
             answer: gameState == GAME_STATE_SPLIT ? partialAnswer : currentEntry.answer,
             currentValue: currentValue,
             elapsedSplitSeconds: gameState == GAME_STATE_SPLIT ? splitTimer.getElapsedSeconds() : undefined,
-            totalSplitSeconds: gameState == GAME_STATE_SPLIT ? config.splitInterval / 1000 : undefined,
+            totalSplitSeconds: config.splitInterval / 1000,
             freeAttemptsLeft: gameState == GAME_STATE_SPLIT ? getFreeAttemptsLeft(user) : undefined,
             entryReported: reporters.has(user._id.toString()),
             players: getPlayingUsersCount(),

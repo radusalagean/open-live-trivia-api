@@ -182,5 +182,9 @@ module.exports = () => {
         })
     })
 
+    api.get('/me', auth.authorizedRequest, (req, res) => {
+        res.json(getPublicUserProjection(res.locals.user))
+    })
+
     return api
 }

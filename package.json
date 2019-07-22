@@ -1,6 +1,6 @@
 {
   "name": "open-live-trivia-api",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Server-side part of the Open Live Trivia project",
   "main": "open-live-trivia-api",
   "scripts": {

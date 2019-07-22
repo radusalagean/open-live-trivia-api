@@ -56,7 +56,8 @@ function getPublicUserProjection(user) {
         _id: user._id,
         username: user.username,
         rights: user.rights,
-        coins: user.coins
+        coins: user.coins,
+        joined: user.joined
     }
 }
 
