@@ -198,7 +198,8 @@ Example: `https://releasetracker.app/open-live-trivia-api-static/user-thumbnails
         "_id": "5d1f2052a93b8d38b87750d3",
         "username": "Radu",
         "rights": 0,
-        "coins": 106
+        "coins": 106,
+        "joined": "2019-07-05T10:41:44.203Z"
       }
     ]
     ```
@@ -229,7 +230,8 @@ Example Response Body **`201 CREATED`**:
   "_id": "5d1f2052a93b8d38b87750d3",
   "username": "Radu",
   "rights": 0,
-  "coins": 100
+  "coins": 100,
+  "joined": "2019-07-05T10:41:44.203Z"
 }
 ```
 
@@ -248,7 +250,8 @@ Example Response Body **`200 OK`**:
   "_id": "5d1f2052a93b8d38b87750d3",
   "username": "Radu",
   "rights": 0,
-  "coins": 100
+  "coins": 100,
+  "joined": "2019-07-05T10:41:44.203Z"
 }
 ```
 
@@ -311,6 +314,20 @@ Example Response Body **`200 OK`**:
       "playing": true
     }
   ]
+}
+```
+
+### Me `🔒`
+**[<code>GET</code> user/me](https://releasetracker.app/open-live-trivia-api/v1/user/me)**
+
+Example Response Body **`200 OK`**:
+```json
+{
+  "_id": "5d1f2052a93b8d38b87750d3",
+  "username": "Radu",
+  "rights": 0,
+  "coins": 100,
+  "joined": "2019-07-05T10:41:44.203Z"
 }
 ```
 
@@ -404,7 +421,7 @@ Example Response Body **`200 OK`**:
 Example Response Body **`200 OK`**:
 ```json
 {
-  "serverVersion": "0.0.1",
+  "serverVersion": "1.0.0",
   "minAppVersionCode": 1,
   "isTriviaServiceRunning": true
 }
