@@ -354,7 +354,9 @@ function onReportEntry(socket, data) {
 // SOCKET EVENT: REQUEST_PLAYER_LIST
 function onRequestPlayerList(socket, data) {
     let userMap = getPlayingUsers()
-    socket.emit(ev.PLAYER_LIST, Array.from(userMap.values()))
+    socket.emit(ev.PLAYER_LIST, {
+        players: Array.from(userMap.values())
+    })
 }
 
 function getPlayingUsers() {
