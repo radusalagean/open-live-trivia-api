@@ -23,6 +23,11 @@ app.use(bodyParser.json({
 // Routes
 app.use('/open-live-trivia-api/v1/', routes)
 
+// Public folder
+if (process.env.NODE_ENV == "development") { // In production, Nginx will server the public folder
+    app.use('/open-live-trivia-api-static', express.static('public'))
+}
+
 // HTTP Server
 const server = http.createServer(app)
 

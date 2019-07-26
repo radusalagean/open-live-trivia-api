@@ -224,7 +224,10 @@ function postAuth(socket, data) {
         return
     }
     // Disconnect any other socket still open from the same user
-    disconnectExtraConnections(socket.client.user._id.toString(), socket)
+    let previousUserInstance = disconnectExtraConnections(socket.client.user._id.toString(), socket)
+    if (previousUserInstance) {
+        socket.client.user = previousUserInstance
+    }
     // console.log(`postAuth(${socket.id})`)
     socket.emit(ev.WELCOME, getGameState(socket.client.user))
     // Send the game state as soon as the player is authenticated
@@ -262,7 +265,7 @@ function onAttempt(socket, data) {
             console.log(`${user.username} sent an attempt that exceeds ${config.attemptStringMaxLength} characters (${data.message.length}). Ignoring attempt`)
             return
         }
-        if (!handleAttemptCost(user)) {
+        if (!handleAttemptCost(user, socket)) {
             return
         }
         if (correct) {
@@ -388,10 +391,14 @@ function getPlayingUsersCount() {
     return count
 }
 
+function isUserPlaying(userId) {
+    let playingUsersMap = getPlayingUsers()
+    return playingUsersMap.has(userId)
+}
+
 function disconnect(socket) {
-    // console.log(`disconnect(${socket.id})`)
     let user = socket.client.user
-    if (user) {
+    if (user && !isUserPlaying(user._id.toString())) {
         user.lastSeen = Date.now()
         serverSocket.emit(ev.PEER_LEFT, {
             userId: socket.client.user._id.toString(),
@@ -407,11 +414,12 @@ function disconnect(socket) {
     }
 }
 
-function handleAttemptCost(user) {
+function handleAttemptCost(user, socket) {
     if (getFreeAttemptsLeft(user) == 0) {
         // The free attempts are used up for this round
         if (user.coins - config.extraAttemptCost < 0) {
             console.log(`${user.username} sent an attempt but was unable to pay for it, ignoring request...`)
+            socket.emit(ev.INSUFFICIENT_FUNDS)
             return false
         }
         user.coins -= config.extraAttemptCost
@@ -485,7 +493,7 @@ function disconnectUserById(userId) {
     clientSockets.forEach(clientSocket => {
         let user = clientSocket.client.user
         if (user._id.toString() == userId) {
-            disconnect(clientSocket)
+            clientSocket.disconnect()
             return
         }
     })
@@ -493,13 +501,15 @@ function disconnectUserById(userId) {
 
 function disconnectExtraConnections(userId, currentSocket) {
     let clientSockets = Object.values(serverSocket.sockets.sockets)
+    let previousUserInstance
     clientSockets.forEach(clientSocket => {
         let user = clientSocket.client.user
-        if (user._id.toString() == userId && currentSocket != clientSocket) {
-            disconnect(clientSocket)
-            return
+        if (user._id.toString() == userId && currentSocket.id !== clientSocket.id) {
+            previousUserInstance = user
+            clientSocket.disconnect()
         }
     })
+    return previousUserInstance
 }
 
 module.exports = {
