@@ -118,6 +118,8 @@ function sanitizeQuestion() {
 function sanitizeAnswer() {
     currentEntry.answer = currentEntry.answer.trim()
     currentEntry.answer = currentEntry.answer.replace('\\', '')
+    currentEntry.answer = currentEntry.answer.replace('(', '')
+    currentEntry.answer = currentEntry.answer.replace(')', '')
     currentEntry.answer = currentEntry.answer.replace(excludedHtmlTags, '')
     currentEntry.answer = stringHelpers.trimSurroundingCharacter(currentEntry.answer, '"')
     currentEntry.answer = stringHelpers.trimSurroundingCharacter(currentEntry.answer, '\'')
@@ -209,7 +211,7 @@ function areMoreSplitsAvailable() {
 
 function isEntryValid(entry) {
     if (!entry || !entry.id || !entry.question.trim() ||
-            !entry.answer.trim() || !entry.answer.trim() || 
+            !entry.answer.trim() || entry.answer.trim() <= 1 || 
             entry.answer.includes('_')) {
         return false
     }
@@ -221,6 +223,8 @@ function postAuth(socket, data) {
         console.log(`${socket.client.user.username} attempted to double-authenticate, ignoring request...`)
         return
     }
+    // Disconnect any other socket still open from the same user
+    disconnectExtraConnections(socket.client.user._id.toString(), socket)
     // console.log(`postAuth(${socket.id})`)
     socket.emit(ev.WELCOME, getGameState(socket.client.user))
     // Send the game state as soon as the player is authenticated
@@ -465,10 +469,45 @@ function disconnectEveryone() {
     return disconnectedCount
 }
 
+function handleUserRightsChange(userId, rightsLevel) {
+    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    clientSockets.forEach(clientSocket => {
+        let user = clientSocket.client.user
+        if (user._id.toString() == userId) {
+            user.rights = rightsLevel
+            return
+        }
+    })
+}
+
+function disconnectUserById(userId) {
+    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    clientSockets.forEach(clientSocket => {
+        let user = clientSocket.client.user
+        if (user._id.toString() == userId) {
+            disconnect(clientSocket)
+            return
+        }
+    })
+}
+
+function disconnectExtraConnections(userId, currentSocket) {
+    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    clientSockets.forEach(clientSocket => {
+        let user = clientSocket.client.user
+        if (user._id.toString() == userId && currentSocket != clientSocket) {
+            disconnect(clientSocket)
+            return
+        }
+    })
+}
+
 module.exports = {
     start,
     postAuth,
     disconnect,
     getPlayingUsers,
-    disconnectEveryone
+    disconnectEveryone,
+    handleUserRightsChange,
+    disconnectUserById
 }

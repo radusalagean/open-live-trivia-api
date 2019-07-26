@@ -6,7 +6,9 @@ import * as paginationHelpers from '../helpers/paginationHelpers'
 import * as auth from '../middleware/authMiddleware'
 import config from '../config'
 import { 
-    getPlayingUsers
+    getPlayingUsers,
+    handleUserRightsChange,
+    disconnectUserById
  } from '../game'
 import {
     getPublicUserProjection
@@ -92,6 +94,7 @@ module.exports = () => {
             }
             deleteImage(user)
             console.log(`ACCOUNT REMOVED BY USER: ${user.username}`)
+            disconnectUserById(user._id.toString())
             return res.status(HttpStatus.OK)
                 .json(jrh.message('Account removed successfully'))
         })
@@ -148,6 +151,7 @@ module.exports = () => {
                         .json(jrh.message(`Error ${err.message}`))
                 }
                 console.log(`USER RIGHTS CHANGE: ${res.locals.user.username} gave ${user.username} level ${rights} rights`)
+                handleUserRightsChange(user._id.toString(), rights)
                 res.status(HttpStatus.OK)
                     .json(jrh.message(`${user.username}'s rights changed to type ${rights}`))
             })
