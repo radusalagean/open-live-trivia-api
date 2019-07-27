@@ -96,6 +96,7 @@ Example: `https://releasetracker.app/open-live-trivia-api-static/user-thumbnails
   |`WELCOME`|The first event sent by the server when a client is connected and authenticated|
   |`PEER_JOIN`|Broadcasted to all connected clients when a new client is connected and successfully authenticated|
   |`PEER_ATTEMPT`|Broadcasted to all connected clients when a client sent an attempt to the server|
+  |`INSUFFICIENT_FUNDS`|Sent to the client who previously sent an attempt that he was unable to pay for|
   |`COIN_DIFF`|Sent to the client who previously sent an attempt if there was a change in his coin bank (like the price paid for the attempt and / or the reward received for the correct answer)|
   |`PEER_REACTION`|Broadcasted to all connected clients when a client sent a reaction to the server|
   |`ROUND`|Broadcasted to all connected clients when a new round starts|
@@ -193,15 +194,17 @@ Example: `https://releasetracker.app/open-live-trivia-api-static/user-thumbnails
     ```
     - `PLAYER_LIST`
     ```json
-    [
-      {
-        "_id": "5d1f2052a93b8d38b87750d3",
-        "username": "Radu",
-        "rights": 0,
-        "coins": 106,
-        "joined": "2019-07-05T10:41:44.203Z"
-      }
-    ]
+    {
+      "players": [
+        {
+          "_id": "5d1f2052a93b8d38b87750d3",
+          "username": "Radu",
+          "rights": 0,
+          "coins": 106,
+          "joined": "2019-07-05T10:41:44.203Z"
+        }
+      ]
+    }
     ```
     - `PEER_LEFT`
     ```json
