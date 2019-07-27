@@ -7,7 +7,7 @@
       <x>546</x>
       <y>0</y>
       <w>1050</w>
-      <h>1365</h>
+      <h>1253</h>
     </coordinates>
     <panel_attributes>Server
 valign=top</panel_attributes>
@@ -19,7 +19,7 @@ valign=top</panel_attributes>
       <x>0</x>
       <y>0</y>
       <w>532</w>
-      <h>1365</h>
+      <h>1253</h>
     </coordinates>
     <panel_attributes>Client
 valign=top</panel_attributes>
