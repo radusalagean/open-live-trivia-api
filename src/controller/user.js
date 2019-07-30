@@ -168,7 +168,7 @@ module.exports = () => {
             let pages = paginationHelpers.getNumOfPages(count, perPage)
             let page = paginationHelpers.getCurrentPage(req, pages)
             let playingUsersMap = getPlayingUsers()
-            userModel.User.find({}, 'username rights coins lastSeen', (err, users) => {
+            userModel.User.find({}, 'username rights coins lastSeen joined', (err, users) => {
                 if (err) {
                     return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .json(jrh.message(`Error: ${err.message}`))
@@ -181,7 +181,7 @@ module.exports = () => {
             })
             .skip((page - 1) * perPage)
             .limit(perPage)
-            .sort({ coins: 1 })
+            .sort({ coins: -1 })
             .lean()
         })
     })

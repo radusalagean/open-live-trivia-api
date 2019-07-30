@@ -512,6 +512,13 @@ function disconnectExtraConnections(userId, currentSocket) {
     return previousUserInstance
 }
 
+function getCurrentEntryId() {
+    if (currentEntry) {
+        return currentEntry.id
+    }
+    return null
+}
+
 module.exports = {
     start,
     postAuth,
@@ -519,5 +526,6 @@ module.exports = {
     getPlayingUsers,
     disconnectEveryone,
     handleUserRightsChange,
-    disconnectUserById
+    disconnectUserById,
+    getCurrentEntryId
 }

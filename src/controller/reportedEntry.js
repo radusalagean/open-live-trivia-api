@@ -4,6 +4,7 @@ import HttpStatus from 'http-status-codes'
 import * as jrh from '../helpers/jsonResponseHelpers'
 import * as paginationHelpers from '../helpers/paginationHelpers'
 import * as auth from '../middleware/authMiddleware'
+import * as game from '../game'
 import config from '../config'
 
 function queryReportedEntry(reportId, res, cb) {
@@ -38,10 +39,17 @@ module.exports = () => {
     let api = Router()
 
     api.get('/get_reports', auth.authorizedRequest, auth.moderatorRights, (req, res) => {
+        // Exclude the current entry being played
+        let currentEntry = game.getCurrentEntryId()
+        let findCriteria = {
+            entryId: { $ne: currentEntry }
+        }
         // if the banned query is in the url, narrow the search
         // otherwise, return all reports
         let banned = req.query.banned
-        let findCriteria = banned !== undefined ? { banned: banned } : {}
+        if (banned) {
+            findCriteria.banned = banned
+        }
         ReportedEntry.countDocuments(findCriteria, (err, count) => {
             if (err) {
                 return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
