@@ -504,7 +504,7 @@ function disconnectExtraConnections(userId, currentSocket) {
     let previousUserInstance
     clientSockets.forEach(clientSocket => {
         let user = clientSocket.client.user
-        if (user._id.toString() == userId && currentSocket.id !== clientSocket.id) {
+        if (user && user._id.toString() == userId && currentSocket.id !== clientSocket.id) {
             previousUserInstance = user
             clientSocket.disconnect()
         }
