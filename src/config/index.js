@@ -3,7 +3,8 @@ export default {
     'socketAuthTimeout': 10 * 1000, // Duration of the period a user who just connected to the server socket has to authenticate, until he is disconnected automatically
     'mongoUrl': 'mongodb://localhost:27017/open-live-trivia-api', // The database url
     'bodyLimit': '100kb', // Max size of request bodies accepted
-    'minAppVersionCode': 1, // The minimum version code of the client app (check on the app and show "update app" dialog if required)
+    'minAppVersionCode': 1, // The minimum compatible version code of the client app (check on the app and show "update app" dialog if required)
+    'latestAppVersionCode': 1, // The latest version code of the client app (check on the app and inform the user about the available update)
     'usernameMinLength': 4, // Min number of characters allowed for a username
     'usernameMaxLength': 50, // Max number of characters allowed for a username
     'freeStartingCoins': 100, // Free coins awarded upon account registration

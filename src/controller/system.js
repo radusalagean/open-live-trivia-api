@@ -14,6 +14,7 @@ import config from '../config'
 module.exports = () => {
     let api = Router()
 
+    // Useful for gracefully disconnecting all players before doing maintenance on the prod server
     api.post('/disconnect_everyone', auth.authorizedRequest, auth.adminRights, (req, res) => {
         let count = disconnectEveryone()
         let message = `Sent the disconnect signal to ${count} clients`
@@ -27,6 +28,7 @@ module.exports = () => {
             .json({
                 serverVersion: packagefile.version,
                 minAppVersionCode: config.minAppVersionCode,
+                latestAppVersionCode: config.latestAppVersionCode,
                 isTriviaServiceRunning: isServiceRunning()
             })
     })
