@@ -5,12 +5,13 @@
 ## Overview
 ### Game rules
 - An entry is displayed every round
-- Every player has 3 free attempts to submit the correct answer
-- Additional attempts will cost 1 coin
-- The answers are case insensitive, but must have all the characters contained in the answer in order to be considered correct
-- Every 15 seconds, a new character is revealed from the answer
-- Clues range from 10 to 100 coins in value (based on their difficulty)
+- Every player has 3 free attempts available to submit the correct answer
+- Additional attempts will cost 1 point
+- The answers are case insensitive
+- Every 15 seconds, a new random character is revealed from the answer (defined as a split)
+- Entries range from 10 to 100 points in value (based on their difficulty)
 - Their value decreases as more characters are revealed
+- The first player to submit the correct answer wins the prize and the round is over
 
 ### Other features
 - Users are able to request the game leaderboard
