@@ -313,6 +313,7 @@ Example Response Body **`200 OK`**:
       "rights": 2,
       "coins": 100,
       "lastSeen": "2019-07-05T10:41:44.203Z",
+      "joined": "2019-07-05T10:41:44.203Z",
       "username": "Radu",
       "playing": true
     }
@@ -367,6 +368,8 @@ Example Response Body **`200 OK`**:
   ]
 }
 ```
+
+Note: Entries currently running in the game will be excluded from the results.
 
 ### Ban reported entry `🔒 MODERATOR / ADMIN`
 **[<code>PUT</code> reported_entry/ban/:report_id](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/ban/5d1f379a78c6e7342c49488e)**
@@ -426,6 +429,7 @@ Example Response Body **`200 OK`**:
 {
   "serverVersion": "1.0.0",
   "minAppVersionCode": 1,
+  "latestAppVersionCode": 1,
   "isTriviaServiceRunning": true
 }
 ```
