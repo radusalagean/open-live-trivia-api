@@ -143,7 +143,7 @@ function prepareValue() {
     // Allowed values: [10 : 100] (increment unit: 10)
     if (!currentEntry.value) {
         currentEntry.value = Math.floor(((Math.random() * 10) + 1)) * 10
-        console.log(`<!> The entry has no value assigned, generated a random value instead (${currentEntry.value})`)
+        //console.log(`<!> The entry has no value assigned, generated a random value instead (${currentEntry.value})`)
     } else {
         // original values need to be altered in order to match the allowed values from above
         currentEntry.value /= 10
