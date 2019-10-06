@@ -283,7 +283,7 @@ function onAttempt(socket, data) {
             username: user.username,
             message: data.message,
             correct: correct,
-            correctAnswer: currentEntry.answer
+            correctAnswer: correct ? currentEntry.answer : "" // TODO change to undefined and update app
         }
         let pastCount = roundAttemptsCountMap.get(userId) ? 
             roundAttemptsCountMap.get(userId) : 0
