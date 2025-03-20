@@ -1,6 +1,5 @@
 **Update October 14, 2020:** Both the server and the client app are now retired. Feel free to use the sources if you want to deploy your own server-client configuration of this project.
 
-[![Build Status](https://travis-ci.org/radusalagean/open-live-trivia-api.svg?branch=master)](https://travis-ci.org/radusalagean/open-live-trivia-api)
 # open-live-trivia-api
 **Open Live Trivia** is an open-source multiplayer trivia game. This repo hosts the server-side part of the project. For the corresponding client app, please check [this](https://github.com/radusalagean/open-live-trivia-app-android) link.
 
