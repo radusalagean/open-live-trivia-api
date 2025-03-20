@@ -54,9 +54,6 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
-
 # next.js build output
 .next
 
@@ -66,8 +63,11 @@ typings/
 # Public directory
 public/
 
-# auto generated package-lock.json
-package-lock.json
-
 # Firebase Admin SDK Key
 *firebase-adminsdk*
+
+/secrets
+/backups
+
+# mac OS
+.DS_Store
