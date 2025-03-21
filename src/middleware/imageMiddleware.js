@@ -1,9 +1,9 @@
-import fs from 'fs'
-import config from '../config'
-import mkdirp from 'mkdirp'
-import GeoPattern from 'geopattern'
-import randomColor from 'randomcolor'
-import { convert } from 'convert-svg-to-png'
+const fs = require('fs')
+const config = require('../config')
+const mkdirp = require('mkdirp')
+const GeoPattern = require('geopattern')
+const randomColor = require('randomcolor')
+const { convert } = require('convert-svg-to-png')
 
 const parentDir = config.publicRootDirectory + '/' + config.userThumbnailsDirectory
 

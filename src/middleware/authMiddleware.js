@@ -1,7 +1,7 @@
-import HttpStatus from 'http-status-codes'
-import * as userModel from '../model/user'
-import * as admin from 'firebase-admin'
-import * as jrh from '../helpers/jsonResponseHelpers'
+const HttpStatus = require('http-status-codes');
+const userModel = require('../model/user');
+const admin = require('firebase-admin');
+const jrh = require('../helpers/jsonResponseHelpers');
 
 /**
  * Ensure received request is authorized properly

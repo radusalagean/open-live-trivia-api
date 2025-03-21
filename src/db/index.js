@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
-import config from '../config'
+const mongoose = require('mongoose');
+const config = require('../config');
 
-export default callback => {
+module.exports = callback => {
   let db = mongoose.connect(config.mongoUrl, { useNewUrlParser: true })
   callback(db)
 }

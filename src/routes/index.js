@@ -1,9 +1,9 @@
-import express from 'express'
-import config from '../config'
-import initializeDb from "../db"
-import user from '../controller/user'
-import reportedEntry from '../controller/reportedEntry'
-import system from '../controller/system'
+const express = require('express');
+const config = require('../config');
+const initializeDb = require("../db");
+const user = require('../controller/user');
+const reportedEntry = require('../controller/reportedEntry');
+const system = require('../controller/system');
 
 let router = express()
 
@@ -15,4 +15,4 @@ initializeDb(db => {
   router.use('/system', system())
 })
 
-export default router
+module.exports = router

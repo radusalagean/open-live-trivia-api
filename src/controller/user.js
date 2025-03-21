@@ -1,22 +1,22 @@
-import Router from 'express'
-import * as userModel from '../model/user'
-import HttpStatus from 'http-status-codes'
-import * as jrh from '../helpers/jsonResponseHelpers'
-import * as paginationHelpers from '../helpers/paginationHelpers'
-import * as auth from '../middleware/authMiddleware'
-import config from '../config'
-import { 
+const Router = require('express')
+const userModel = require('../model/user')
+const HttpStatus = require('http-status-codes')
+const jrh = require('../helpers/jsonResponseHelpers')
+const paginationHelpers = require('../helpers/paginationHelpers')
+const auth = require('../middleware/authMiddleware')
+const config = require('../config')
+const {
     getPlayingUsers,
     handleUserRightsChange,
     disconnectUserById
- } from '../game'
-import {
+} = require('../game')
+const {
     getPublicUserProjection
-} from '../model/user'
-import {
+} = require('../model/user')
+const {
     generateImage,
     deleteImage
-} from '../middleware/imageMiddleware'
+} = require('../middleware/imageMiddleware')
 
 module.exports = () => {
     let api = Router()
@@ -179,10 +179,10 @@ module.exports = () => {
                 res.status(HttpStatus.OK)
                     .json(paginationHelpers.getPaginatedResponse(page, pages, count, perPage, users))
             })
-            .skip((page - 1) * perPage)
-            .limit(perPage)
-            .sort({ coins: -1 })
-            .lean()
+                .skip((page - 1) * perPage)
+                .limit(perPage)
+                .sort({ coins: -1 })
+                .lean()
         })
     })
 

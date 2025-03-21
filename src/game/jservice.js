@@ -1,5 +1,5 @@
-import http from 'http'
-import HttpStatus from 'http-status-codes'
+const http = require('http');
+const HttpStatus = require('http-status-codes');
 
 var running
 
@@ -39,8 +39,8 @@ function isServiceRunning() {
 }
 
 const getOptions = {
-    host: 'jservice.io',
-    port: 80,
+    host: 'localhost',
+    port: 3000,
     path: '/api/random',
     method: 'GET'
 }

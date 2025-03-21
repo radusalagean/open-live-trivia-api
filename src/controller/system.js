@@ -1,15 +1,15 @@
-import Router from 'express'
-import * as auth from '../middleware/authMiddleware'
-import * as jrh from '../helpers/jsonResponseHelpers'
-import packagefile from '../../package.json'
-import HttpStatus from 'http-status-codes'
-import { 
+const Router = require('express')
+const auth = require('../middleware/authMiddleware')
+const jrh = require('../helpers/jsonResponseHelpers')
+const packagefile = require('../../package.json')
+const HttpStatus = require('http-status-codes')
+const {
     disconnectEveryone
- } from '../game'
- import {
+} = require('../game')
+const {
     isServiceRunning
- } from '../game/jservice'
-import config from '../config'
+} = require('../game/jservice')
+const config = require('../config')
 
 module.exports = () => {
     let api = Router()

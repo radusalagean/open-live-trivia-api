@@ -1,11 +1,11 @@
-import Router from 'express'
-import ReportedEntry from '../model/reportedEntry'
-import HttpStatus from 'http-status-codes'
-import * as jrh from '../helpers/jsonResponseHelpers'
-import * as paginationHelpers from '../helpers/paginationHelpers'
-import * as auth from '../middleware/authMiddleware'
-import * as game from '../game'
-import config from '../config'
+const Router = require('express')
+const ReportedEntry = require('../model/reportedEntry')
+const HttpStatus = require('http-status-codes')
+const jrh = require('../helpers/jsonResponseHelpers')
+const paginationHelpers = require('../helpers/paginationHelpers')
+const auth = require('../middleware/authMiddleware')
+const game = require('../game')
+const config = require('../config')
 
 function queryReportedEntry(reportId, res, cb) {
     if (!reportId) {

@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     'port': 3006, // Port
     'socketAuthTimeout': 10 * 1000, // Duration of the period a user who just connected to the server socket has to authenticate, until he is disconnected automatically
     'mongoUrl': 'mongodb://localhost:27017/open-live-trivia-api', // The database url

@@ -1,12 +1,12 @@
-import * as ev from './events'
-import * as jservice from '../game/jservice'
-import * as stringHelpers from '../helpers/stringHelpers'
-import { 
-    getPublicUserProjection 
-} from '../model/user'
-import config from '../config'
-import Timer from './timer'
-import ReportedEntry from '../model/reportedEntry'
+const ev = require('./events')
+const jservice = require('../game/jservice')
+const stringHelpers = require('../helpers/stringHelpers')
+const {
+    getPublicUserProjection
+} = require('../model/user')
+const config = require('../config')
+const Timer = require('./timer')
+const ReportedEntry = require('../model/reportedEntry')
 
 const GAME_STATE_NONE = 0
 const GAME_STATE_SPLIT = 1
@@ -78,7 +78,7 @@ function requestNewEntry() {
                 startRound()
             })
         }
-        
+
     })
 }
 
@@ -129,7 +129,7 @@ function prepareFirstSplit() {
     let answer = currentEntry.answer
     let tmp = ''
     for (let i = 0; i < answer.length; i++) {
-        tmp += excludedCharacters.has(answer.charAt(i)) ? 
+        tmp += excludedCharacters.has(answer.charAt(i)) ?
             answer.charAt(i) : '_'
     }
     partialAnswer = tmp
@@ -163,7 +163,7 @@ function nextSplit() {
     }
     let rand = Math.floor(Math.random() * missingIndexes.length)
     let chosenIndex = missingIndexes[rand]
-    partialAnswer = stringHelpers.replaceAt(partialAnswer, 
+    partialAnswer = stringHelpers.replaceAt(partialAnswer,
         chosenIndex, currentEntry.answer.charAt(chosenIndex))
     // Update the value
     currentValue = parseFloat((currentValue - splitValue).toFixed(2))
@@ -211,8 +211,8 @@ function areMoreSplitsAvailable() {
 
 function isEntryValid(entry) {
     if (!entry || !entry.id || !entry.question.trim() ||
-            !entry.answer.trim() || entry.answer.trim() <= 1 || 
-            entry.answer.includes('_')) {
+        !entry.answer.trim() || entry.answer.trim() <= 1 ||
+        entry.answer.includes('_')) {
         return false
     }
     return true
@@ -285,7 +285,7 @@ function onAttempt(socket, data) {
             correct: correct,
             correctAnswer: correct ? currentEntry.answer : "" // TODO change to undefined and update app
         }
-        let pastCount = roundAttemptsCountMap.get(userId) ? 
+        let pastCount = roundAttemptsCountMap.get(userId) ?
             roundAttemptsCountMap.get(userId) : 0
         roundAttemptsCountMap.set(userId, ++pastCount)
         roundAttempts.push(roundAttempt)
@@ -342,7 +342,7 @@ function onReportEntry(socket, data) {
                 report.category = currentEntry.category ? currentEntry.category.title : undefined
                 report.clue = currentEntry.question
                 report.answer = currentEntry.answer
-                report.reporters = [ user ]
+                report.reporters = [user]
                 report.save(err => {
                     if (err) {
                         console.log(`Error: ${err.message}`)

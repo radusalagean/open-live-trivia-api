@@ -3,6 +3,11 @@
 # open-live-trivia-api
 **Open Live Trivia** is an open-source multiplayer trivia game. This repo hosts the server-side part of the project. For the corresponding client app, please check [this](https://github.com/radusalagean/open-live-trivia-app-android) link.
 
+## Required files
+```
+~/.open-live-trivia_vault/open-live-trivia-firebase-adminsdk-e5krk-044318ee08.json
+```
+
 ## Overview
 ### Game rules
 - An entry is displayed every round

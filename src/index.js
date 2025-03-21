@@ -1,13 +1,13 @@
-import express from 'express'
-import * as admin from 'firebase-admin'
-import http from 'http'
-import bodyParser from 'body-parser'
-import io from 'socket.io'
-import socketAuth from 'socketio-auth'
-import config from './config'
-import routes from './routes'
-import * as game from './game'
-import * as auth from './middleware/authMiddleware'
+const express = require('express');
+const admin = require('firebase-admin');
+const http = require('http');
+const bodyParser = require('body-parser');
+const io = require('socket.io');
+const socketAuth = require('socketio-auth');
+const config = require('./config');
+const routes = require('./routes');
+const game = require('./game');
+const auth = require('./middleware/authMiddleware');
 
 
 // Init Firebase Admin

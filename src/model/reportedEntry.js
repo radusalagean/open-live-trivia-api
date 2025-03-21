@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import uniqueValidator from 'mongoose-unique-validator'
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const ReportedEntrySchema = new mongoose.Schema({
     entryId: {
