@@ -1,7 +1,7 @@
 const http = require('http');
 const HttpStatus = require('http-status-codes');
 
-var running
+var running = false
 
 function requestRandomEntry(onError, onSuccess) {
     // console.log('Requesting random entry...')
