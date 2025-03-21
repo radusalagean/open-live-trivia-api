@@ -39,7 +39,7 @@ function isServiceRunning() {
 }
 
 const getOptions = {
-    host: 'localhost',
+    host: '192.168.0.2',
     port: 3000,
     path: '/api/random',
     method: 'GET'

@@ -66,8 +66,8 @@ public/
 # Firebase Admin SDK Key
 *firebase-adminsdk*
 
+# Secrets
 /secrets
-/backups
 
 # mac OS
 .DS_Store

@@ -1,0 +1,17 @@
+services:
+  open-live-trivia-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3006:3006"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - $HOME/.open-live-trivia_vault:/root/.open-live-trivia_vault:ro
+    tty: true
+    stdin_open: true
+
+networks:
+  open-live-trivia-network:
+    driver: bridge

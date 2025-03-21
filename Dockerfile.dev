@@ -1,0 +1,11 @@
+FROM node:12
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm install
+
+EXPOSE 3006
+
+CMD ["npm", "run", "dev"]

@@ -1,0 +1,25 @@
+name: open-live-trivia
+
+services:
+  open-live-trivia-db:
+    image: mongo:4.0
+    container_name: open-live-trivia-db
+    restart: unless-stopped
+    networks:
+      - ${NETWORK_NAME:-open-live-trivia-network}
+    volumes:
+      - open-live-trivia-db:/data/db
+
+  open-live-trivia-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: open-live-trivia-api
+    restart: unless-stopped
+    networks:
+      - ${NETWORK_NAME:-open-live-trivia-network}
+    depends_on:
+      - open-live-trivia-db
+
+volumes:
+  open-live-trivia-db:
