@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/radusalagean/open-live-trivia-api#readme",
   "dependencies": {
-    "convert-svg-to-png": "^0.5.0",
+    "convert-svg-to-png": "^0.6.4",
     "express": "^4.17.1",
     "firebase-admin": "^8.2.0",
     "geopattern": "^1.2.3",
