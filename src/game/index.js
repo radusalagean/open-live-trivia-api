@@ -279,6 +279,7 @@ function onAttempt(socket, data) {
         }
         let userId = user._id.toString()
         roundAttempt = {
+            id: roundAttempts.length,
             userId: userId,
             username: user.username,
             message: data.message,
