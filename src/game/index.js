@@ -154,6 +154,10 @@ function nextSplit() {
     if (splitTimer) {
         splitTimer.stop()
     }
+    if (!areMoreSplitsAvailable()) {
+        reveal()
+        return
+    }
     // Reveal new missing character
     let missingIndexes = []
     for (let i = 0; i < partialAnswer.length; i++) {
@@ -168,7 +172,7 @@ function nextSplit() {
     // Update the value
     currentValue = parseFloat((currentValue - splitValue).toFixed(2))
     // console.log(`Split: ${partialAnswer} : ${currentValue}`)
-    splitTimer = new Timer(areMoreSplitsAvailable() ? nextSplit : reveal, config.splitInterval)
+    splitTimer = new Timer(nextSplit, config.splitInterval)
     // SEND SPLIT
     serverSocket.emit(ev.SPLIT, {
         answer: partialAnswer,
