@@ -40,8 +40,8 @@ function isServiceRunning() {
 }
 
 const getOptions = {
-    host: '192.168.0.2',
-    port: 3000,
+    host: process.env.JSERVICE_HOST,
+    port: process.env.JSERVICE_PORT,
     path: '/api/random?max_words=' + config.jServiceMaxWordsInAnswer,
     method: 'GET'
 }

@@ -20,6 +20,8 @@ services:
       - ${NETWORK_NAME:-open-live-trivia-network}
     depends_on:
       - open-live-trivia-db
+    env_file:
+      - env/api.env
 
 volumes:
   open-live-trivia-db:
