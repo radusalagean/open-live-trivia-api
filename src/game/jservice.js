@@ -1,5 +1,6 @@
 const http = require('http');
 const HttpStatus = require('http-status-codes');
+const config = require('../config');
 
 var running = false
 
@@ -41,7 +42,7 @@ function isServiceRunning() {
 const getOptions = {
     host: '192.168.0.2',
     port: 3000,
-    path: '/api/random',
+    path: '/api/random?max_words=' + config.jServiceMaxWordsInAnswer,
     method: 'GET'
 }
 

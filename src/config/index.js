@@ -19,5 +19,6 @@ module.exports = {
     'attemptStringMaxLength': 200, // Max number of characters allowed for an attempt
     'reportedEntriesPerPage': 10, // Max number of reported entries returned per page (on query requests)
     'usersPerPage': 20, // Max number of users returned per page (on leaderboard requests)
-    'jServiceRetryInterval': 10 * 1000 // The delay in milliseconds for the next jService request retry if the previous one failed with an error
+    'jServiceRetryInterval': 10 * 1000, // The delay in milliseconds for the next jService request retry if the previous one failed with an error
+    'jServiceMaxWordsInAnswer': 4 // Max number of words allowed in the answer
 }
