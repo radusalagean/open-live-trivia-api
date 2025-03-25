@@ -1,21 +1,12 @@
 const fs = require('fs')
 const config = require('../config')
 const mkdirp = require('mkdirp')
-const GeoPattern = require('geopattern')
-const randomColor = require('randomcolor')
-const { convert } = require('convert-svg-to-png')
+const jdenticon = require('jdenticon')
 
 const parentDir = config.publicRootDirectory + '/' + config.userThumbnailsDirectory
 
 async function generateImage(user) {
-    let pattern = GeoPattern.generate(user.username, {
-        color: randomColor()
-    })
-    let svg = pattern.toSvg()
-    let png = await convert(svg, {
-        width: config.userThumbnailSize,
-        height: config.userThumbnailSize
-    })
+    const png = jdenticon.toPng(user._id.toString(), config.userThumbnailSize);
     mkdirp.sync(parentDir) // create directory tree if necessary
     let path = getImagePath(user)
     // Save the file

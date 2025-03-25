@@ -8,7 +8,7 @@ module.exports = {
     'usernameMinLength': 4, // Min number of characters allowed for a username
     'usernameMaxLength': 50, // Max number of characters allowed for a username
     'freeStartingCoins': 100, // Free coins awarded upon account registration
-    'userThumbnailSize': 150, // Max user thumbnail size, in px (will be applied to width and height)
+    'userThumbnailSize': 320, // Max user thumbnail size, in px (will be applied to width and height)
     'publicRootDirectory': 'public', // The publicly accessible directory for static content
     'userThumbnailsDirectory': 'user-thumbnails', // The directory containing profile image thumbnails
     'splitInterval': 5 * 1000, // The duration of a split (milliseconds)

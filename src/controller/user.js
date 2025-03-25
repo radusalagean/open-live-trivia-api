@@ -70,7 +70,7 @@ module.exports = () => {
                     }
                     // Generate profile image
                     generateImage(user)
-                        .catch(err => console.log(`>> ${err.stack}`))
+                        .catch(err => console.log(`>> ${err.message}`))
                     console.log(`NEW USER REGISTERED: ${user.username}`)
                     return res.status(HttpStatus.CREATED)
                         .json(getPublicUserProjection(user))
