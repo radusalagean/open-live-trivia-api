@@ -11,7 +11,7 @@ module.exports = {
     'userThumbnailSize': 150, // Max user thumbnail size, in px (will be applied to width and height)
     'publicRootDirectory': 'public', // The publicly accessible directory for static content
     'userThumbnailsDirectory': 'user-thumbnails', // The directory containing profile image thumbnails
-    'splitInterval': 15 * 1000, // The duration of a split (milliseconds)
+    'splitInterval': 5 * 1000, // The duration of a split (milliseconds)
     'roundEndDelay': 8 * 1000, // The duration of a delay applied at the end of a round, until the next round starts (milliseconds)
     'excludedCharacters': new Set([' ', '"', '-', '(', ')', '.', ',', '&', '/']), // Characters that will always be shown in the answer
     'freeAttemptsPerRound': 3, // Number of free attempts per round that a player can use
