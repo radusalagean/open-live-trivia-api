@@ -12,6 +12,8 @@ const GAME_STATE_NONE = 0
 const GAME_STATE_SPLIT = 1
 const GAME_STATE_TRANSITION = 2
 
+const invalidWords = config.jServiceInvalidWords.map(word => word.toLowerCase());
+
 /**
  * Characters that will always be shown in the splits
  */
@@ -218,11 +220,20 @@ function areMoreSplitsAvailable() {
 
 function isEntryValid(entry) {
     if (!entry || !entry.id || !entry.question.trim() ||
-        !entry.answer.trim() || entry.answer.trim() <= 1 ||
-        entry.answer.includes('_')) {
+        !entry.answer.trim() ||
+        entry.answer.includes('_') ||
+        doesEntryContainInvalidWords(entry)) {
         return false
     }
     return true
+}
+
+function doesEntryContainInvalidWords(entry) {
+    return invalidWords.some(word => 
+        (entry.answer && entry.answer.toLowerCase().includes(word)) ||
+        (entry.question && entry.question.toLowerCase().includes(word)) ||
+        (entry.category && entry.category.title && entry.category.title.toLowerCase().includes(word))
+    );
 }
 
 function postAuth(socket, data) {
