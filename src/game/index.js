@@ -60,7 +60,10 @@ function requestNewEntry() {
     }, entry => {
         // onSuccess
         // console.log(entry)
-        if (!isEntryValid(entry)) {
+        if (!entry) {
+            console.log('<!> Empty entry received, requesting another one...')
+            jServiceRetryInterval = setInterval(requestNewEntry, config.jServiceRetryInterval)
+        } else if (!isEntryValid(entry)) {
             console.log('<!> Invalid entry received, requesting another one...')
             requestNewEntry()
         } else {
