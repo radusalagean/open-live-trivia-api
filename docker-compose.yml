@@ -2,7 +2,7 @@ name: open-live-trivia
 
 services:
   open-live-trivia-db:
-    image: mongo:4.0
+    image: mongo:8.0
     container_name: open-live-trivia-db
     restart: unless-stopped
     networks:

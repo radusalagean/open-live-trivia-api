@@ -12,6 +12,18 @@ services:
     tty: true
     stdin_open: true
 
+  open-live-trivia-db-browser:
+    image: mongo-express
+    container_name: open-live-trivia-db-browser
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    networks:
+      - ${NETWORK_NAME:-open-live-trivia-network}
+    environment:
+      ME_CONFIG_MONGODB_SERVER: open-live-trivia-db
+      ME_CONFIG_BASICAUTH: false
+
 networks:
   open-live-trivia-network:
     driver: bridge
