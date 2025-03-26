@@ -26,7 +26,7 @@
     "mkdirp": "^0.5.1",
     "mongoose": "^7.0.0",
     "mongoose-unique-validator": "^4.0.0",
-    "socket.io": "^2.2.0",
+    "socket.io": "^4.8.1",
     "socketio-auth": "^0.1.1",
     "pm2": "^6.0.0"
   },
