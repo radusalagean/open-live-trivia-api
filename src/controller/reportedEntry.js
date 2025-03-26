@@ -12,26 +12,24 @@ function queryReportedEntry(reportId, res, cb) {
         return res.status(HttpStatus.BAD_REQUEST)
             .json(jrh.message('Please provide the report id in the request URL'))
     }
-    ReportedEntry.findById(reportId, (err, entry) => {
-        if (err) {
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .json(jrh.message(`Error: ${err.message}`))
-        }
+    ReportedEntry.findById(reportId).then(entry => {
         if (!entry) {
             return res.status(HttpStatus.NOT_FOUND)
                 .json(jrh.message('No entry found for the passed report id'))
         }
         cb(entry)
+    }).catch(err => {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .json(jrh.message(`Error: ${err.message}`))
     })
 }
 
 function saveEntry(entry, res, cb) {
-    entry.save(err => {
-        if (err) {
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .json(jrh.message(`Error: ${err.message}`))
-        }
+    entry.save().then(entry => {
         cb()
+    }).catch(err => {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .json(jrh.message(`Error: ${err.message}`))
     })
 }
 
@@ -50,26 +48,25 @@ module.exports = () => {
         if (banned) {
             findCriteria.banned = banned
         }
-        ReportedEntry.countDocuments(findCriteria, (err, count) => {
-            if (err) {
-                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .json(jrh.message(`Error: ${err.message}`))
-            }
+        ReportedEntry.countDocuments(findCriteria).then(count => {
             let perPage = config.reportedEntriesPerPage
             let pages = paginationHelpers.getNumOfPages(count, perPage)
             let page = paginationHelpers.getCurrentPage(req, pages)
-            ReportedEntry.find(findCriteria, (err, reportedEntries) => {
-                if (err) {
+            ReportedEntry.find(findCriteria)
+                .skip((page - 1) * perPage)
+                .limit(perPage)
+                .sort({ lastReported: -1 })
+                .populate('reporters', 'username')
+                .then(reportedEntries => {
+                    res.status(HttpStatus.OK)
+                        .json(paginationHelpers.getPaginatedResponse(page, pages, count, perPage, reportedEntries))
+                }).catch(err => {
                     return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .json(jrh.message(`Error: ${err.message}`))
-                }
-                res.status(HttpStatus.OK)
-                    .json(paginationHelpers.getPaginatedResponse(page, pages, count, perPage, reportedEntries))
-            })
-            .skip((page - 1) * perPage)
-            .limit(perPage)
-            .sort({ lastReported: -1 })
-            .populate('reporters', 'username')
+                })
+        }).catch(err => {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .json(jrh.message(`Error: ${err.message}`))
         })
     })
 
@@ -105,13 +102,12 @@ module.exports = () => {
         queryReportedEntry(req.params.report_id, res, entry => {
             ReportedEntry.deleteOne({
                 _id: entry._id
-            }, err => {
-                if (err) {
-                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .json(jrh.message(`Error: ${err.message}`))
-                }
+            }).then(() => {
                 return res.status(HttpStatus.OK)
                     .json(jrh.message('Entry report dismissed successfully'))
+            }).catch(err => {
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .json(jrh.message(`Error: ${err.message}`))
             })
         })
     })

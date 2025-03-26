@@ -63,17 +63,17 @@ module.exports = () => {
                 user.username = username
                 user.idToken = idToken
                 user.idTokenExp = new Date(payload.exp * 1000)
-                user.save((err, user) => {
-                    if (err) {
-                        return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .json(jrh.message(`Error: ${err}`))
-                    }
+
+                user.save().then(user => {
                     // Generate profile image
                     generateImage(user)
                         .catch(err => console.log(`>> ${err.message}`))
                     console.log(`NEW USER REGISTERED: ${user.username}`)
                     return res.status(HttpStatus.CREATED)
                         .json(getPublicUserProjection(user))
+                }).catch(err => {
+                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json(jrh.message(`Error: ${err}`))
                 })
             })
         })
@@ -87,16 +87,15 @@ module.exports = () => {
         }
         userModel.User.deleteOne({
             firebaseUid: user.firebaseUid
-        }, err => {
-            if (err) {
-                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .json(jrh.message(`Error: ${err.message}`))
-            }
+        }).then(() => {
             deleteImage(user)
             console.log(`ACCOUNT REMOVED BY USER: ${user.username}`)
             disconnectUserById(user._id.toString())
             return res.status(HttpStatus.OK)
                 .json(jrh.message('Account removed successfully'))
+        }).catch(err => {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .json(jrh.message(`Error: ${err.message}`))
         })
     })
 
@@ -131,11 +130,7 @@ module.exports = () => {
             return res.status(HttpStatus.BAD_REQUEST)
                 .json(jrh.message('You specified unknown rights type'))
         }
-        userModel.User.findById(userId, (err, user) => {
-            if (err) {
-                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .json(jrh.message(`Error: ${err.message}`))
-            }
+        userModel.User.findById(userId).then(user => {
             if (!user) {
                 return res.status(HttpStatus.NOT_FOUND)
                     .json(jrh.message('No user found for the passed user id'))
@@ -145,44 +140,46 @@ module.exports = () => {
                     .json(jrh.message(`The user already has the specified rights (type ${rights})`))
             }
             user.rights = rights
-            user.save(err => {
-                if (err) {
-                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .json(jrh.message(`Error ${err.message}`))
-                }
+            user.save().then(user => {
                 console.log(`USER RIGHTS CHANGE: ${res.locals.user.username} gave ${user.username} level ${rights} rights`)
                 handleUserRightsChange(user._id.toString(), rights)
                 res.status(HttpStatus.OK)
                     .json(jrh.message(`${user.username}'s rights changed to type ${rights}`))
+            }).catch(err => {
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json(jrh.message(`Error ${err.message}`))
             })
+        }).catch(err => {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .json(jrh.message(`Error: ${err.message}`))
         })
     })
 
     api.get('/leaderboard', auth.authorizedRequest, (req, res) => {
-        userModel.User.countDocuments((err, count) => {
-            if (err) {
-                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .json(jrh.message(`Error: ${err.message}`))
-            }
+        userModel.User.countDocuments().then(count => {
             let perPage = config.usersPerPage
             let pages = paginationHelpers.getNumOfPages(count, perPage)
             let page = paginationHelpers.getCurrentPage(req, pages)
             let playingUsersMap = getPlayingUsers()
-            userModel.User.find({}, 'username rights coins lastSeen joined', (err, users) => {
-                if (err) {
-                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .json(jrh.message(`Error: ${err.message}`))
-                }
-                users.forEach(user => {
-                    user.playing = playingUsersMap.has(user._id.toString())
-                })
-                res.status(HttpStatus.OK)
-                    .json(paginationHelpers.getPaginatedResponse(page, pages, count, perPage, users))
-            })
+            userModel.User.find({}, 'username rights coins lastSeen joined')
                 .skip((page - 1) * perPage)
                 .limit(perPage)
                 .sort({ coins: -1 })
                 .lean()
+                .then(users => {
+                    users.forEach(user => {
+                        user.playing = playingUsersMap.has(user._id.toString())
+                    })
+                    res.status(HttpStatus.OK)
+                        .json(paginationHelpers.getPaginatedResponse(page, pages, count, perPage, users))
+                }).catch(err => {
+                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .json(jrh.message(`Error: ${err.message}`))
+                })
+                    
+        }).catch(err => {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .json(jrh.message(`Error: ${err.message}`))
         })
     })
 

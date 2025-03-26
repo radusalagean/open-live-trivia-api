@@ -91,11 +91,11 @@ function isEntryBanned(entry, cb) {
     ReportedEntry.findOne({
         entryId: entry.id,
         banned: true
-    }, (err, entry) => {
-        if (err) {
-            console.log(`Error: ${err.message}`)
-        }
+    }).then(entry => {
         cb(entry ? true : false)
+    }).catch(err => {
+        console.log(`Error: ${err.message}`)
+        cb(false)
     })
 }
 
@@ -326,12 +326,7 @@ function onReportEntry(socket, data) {
     if (gameState && currentEntry) {
         ReportedEntry.findOne({
             entryId: currentEntry.id
-        }, (err, reportedEntry) => {
-            if (err) {
-                console.log(`Error: ${err.message}`)
-                socket.emit(ev.ENTRY_REPORTED_ERROR)
-                return
-            }
+        }).then(reportedEntry => {
             if (reportedEntry) {
                 console.log('Reported entry found in the db, add the user as a reporter')
                 let previousReports = reportedEntry.reporters.filter(reporter => reporter._id == user.id)
@@ -343,15 +338,14 @@ function onReportEntry(socket, data) {
                     console.log(`The entry was reported before by other users, adding ${user.username} to reporters`)
                     reportedEntry.reporters.push(user)
                     reportedEntry.lastReported = Date.now()
-                    reportedEntry.save(err => {
-                        if (err) {
-                            console.log(`Error: ${err.message}`)
-                            socket.emit(ev.ENTRY_REPORTED_ERROR)
-                            return
-                        }
+                    reportedEntry.save().then(reportedEntry => {
                         console.log('Entry reported successfully')
                         reporters.add(user._id.toString())
                         socket.emit(ev.ENTRY_REPORTED_OK)
+                    }).catch(err => {
+                        console.log(`Error: ${err.message}`)
+                        socket.emit(ev.ENTRY_REPORTED_ERROR)
+                        return
                     })
                 }
             } else {
@@ -362,17 +356,19 @@ function onReportEntry(socket, data) {
                 report.clue = currentEntry.question
                 report.answer = currentEntry.answer
                 report.reporters = [user]
-                report.save(err => {
-                    if (err) {
-                        console.log(`Error: ${err.message}`)
-                        socket.emit(ev.ENTRY_REPORTED_ERROR)
-                        return
-                    }
+                report.save().then(reportedEntry => {
                     console.log('Entry reported successfully')
                     reporters.add(user._id.toString())
                     socket.emit(ev.ENTRY_REPORTED_OK)
+                }).catch(err => {
+                    console.log(`Error: ${err.message}`)
+                    socket.emit(ev.ENTRY_REPORTED_ERROR)
+                    return
                 })
             }
+        }).catch(err => {
+            console.log(`Error: ${err.message}`)
+            socket.emit(ev.ENTRY_REPORTED_ERROR)
         })
     }
 }
@@ -424,11 +420,8 @@ function disconnect(socket) {
             username: user.username
         })
         // update diff and last seen in db
-        user.save(err => {
-            if (err) {
-                console.log(`<!> Unable to update user ${user.username}: ${err.message}`)
-                return
-            }
+        user.save().catch(err => {
+            console.log(`<!> Unable to update user ${user.username}: ${err.message}`)
         })
     }
 }

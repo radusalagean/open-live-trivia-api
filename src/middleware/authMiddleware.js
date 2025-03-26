@@ -72,26 +72,22 @@ function socketAuthConfig(authenticate, postAuthenticate, disconnect, timeout) {
  * Check if the passed idToken is already saved in the database
  */
 function checkAuthorizationLocally(idToken, onError, onIdTokenUnknown, onIdTokenExpired, onIdTokenValid) {
-    // console.log('Checking if the idToken is present in the database and is not expired')
     userModel.User.findOne({
         idToken: idToken
-    }, (err, user) => {
-        if (err) {
-            console.log(`Error: ${err.message}`)
-            onError(err)
-        }
+    }).then(user => {
         if (!user) {
             // console.log('Passed idToken not found in the db')
             onIdTokenUnknown()
+        } else if (user.idTokenExp < Date.now()) {
+            // console.log('Passed idToken was found in the database but it\'s expired')
+            onIdTokenExpired()
         } else {
-            if (user.idTokenExp < Date.now()) {
-                // console.log('Passed idToken was found in the database but it\'s expired')
-                onIdTokenExpired()
-            } else {
-                // console.log('Passed idToken is valid')
-                onIdTokenValid(user)
-            }
+            // console.log('Passed idToken is valid')
+            onIdTokenValid(user)
         }
+    }).catch(err => {
+        console.log(`Error: ${err.message}`)
+        onError(err)
     })
 }
 
@@ -187,13 +183,12 @@ function updateIdToken(idToken, user, firebasePayload, onError, onComplete) {
     // console.log(`Updating idToken(${idToken}) and idTokenExp(${firebasePayload.exp}) for uid ${firebasePayload.uid}`)
     user.idToken = idToken
     user.idTokenExp = new Date(firebasePayload.exp * 1000)
-    user.save(err => {
-        if (err) {
-            console.log(`Error: ${err.message}`)
-            onError(err)
-        }
+    user.save().then(user => {
         // console.log('Authorization check passed')
         onComplete()
+    }).catch(err => {
+        console.log(`Error: ${err.message}`)
+        onError(err)
     })
 }
 
@@ -206,11 +201,10 @@ function checkUsernameConflict(username, onError, onConflict, onNonConflict) {
         username: {
             $regex : new RegExp('^' + username + '$', 'i')
         }
-    }, (err, user) => {
-        if (err) {
-            return onError(err)
-        }
+    }).then(user => {
         return user ? onConflict() : onNonConflict()
+    }).catch(err => {
+        onError(err)
     })
 }
 
@@ -226,16 +220,15 @@ function verifyIdTokenWithFirebase(idToken, onError, onUidFound, onUidNotFound) 
             // Check if uid is in the database
             userModel.User.findOne({
                 firebaseUid: payload.uid
-            }, (err, user) => {
-                if (err) {
-                    console.log(`Error: ${err.message}`)
-                    return onError(err)
-                }
+            }).then(user => {
                 if (user) {
                     return onUidFound(user, payload)
                 } else {
                     return onUidNotFound(payload)
                 }
+            }).catch(err => {
+                console.log(`Error: ${err.message}`)
+                onError(err)
             })
         }).catch(error => {
             // console.log(`Firebase Auth Error: ${error}`)
