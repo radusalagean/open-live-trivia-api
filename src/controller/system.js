@@ -19,12 +19,12 @@ module.exports = () => {
         let count = disconnectEveryone()
         let message = `Sent the disconnect signal to ${count} clients`
         console.log(message)
-        res.status(HttpStatus.OK)
+        res.status(HttpStatus.StatusCodes.OK)
             .json(jrh.message(message))
     })
 
     api.get('/info', (req, res) => {
-        res.status(HttpStatus.OK)
+        res.status(HttpStatus.StatusCodes.OK)
             .json({
                 serverVersion: packagefile.version,
                 minAppVersionCode: config.minAppVersionCode,

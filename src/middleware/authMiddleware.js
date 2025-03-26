@@ -15,7 +15,7 @@ const authorizedRequest = (req, res, next) => {
     }
     checkAuthorizationLocally(idToken, err => {
         // onError
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
                 .json(jrh.message(`Error: ${err.message}`))
     }, () => {
         // onIdTokenUnknown
@@ -113,7 +113,7 @@ const adminRights = (req, res, next) => {
 
 function assertRights(user, rights, res) {
     if (user.rights < rights) {
-        res.status(HttpStatus.UNAUTHORIZED)
+        res.status(HttpStatus.StatusCodes.UNAUTHORIZED)
             .json(jrh.message(`You require at least rights type ${rights} for this operation`))
     }
     return user.rights >= rights
@@ -122,7 +122,7 @@ function assertRights(user, rights, res) {
 function assertAuthorizedHeader(req, res) {
     let idToken = req.headers.authorization
     if (!idToken) {
-        res.status(HttpStatus.UNAUTHORIZED)
+        res.status(HttpStatus.StatusCodes.UNAUTHORIZED)
             .json(jrh.message('Authorized header unavailable'))
     }
     return idToken
@@ -131,13 +131,13 @@ function assertAuthorizedHeader(req, res) {
 function checkRequestAuthorizationWithFirebase(idToken, res, next) {
     verifyIdTokenWithFirebase(idToken, err => {
         // onError
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
             .json(jrh.message(`Error: (${err})`))
     }, (user, payload) => {
         // onUidFound
         updateIdToken(idToken, user, payload, err => {
             // onError
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
                 .json(jrh.message(`Error: ${err.message}`))
         }, () => {
             // onComplete
@@ -147,7 +147,7 @@ function checkRequestAuthorizationWithFirebase(idToken, res, next) {
         })
     }, payload => {
         // onUidNotFound
-        return res.status(HttpStatus.NOT_FOUND)
+        return res.status(HttpStatus.StatusCodes.NOT_FOUND)
             .json(jrh.message('No in app-account was found for your Google account (you need to register)'))
     })
 }

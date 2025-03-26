@@ -11,7 +11,7 @@ function requestRandomEntry(onError, onSuccess) {
     let req = http.request(getOptions, res => {
         // console.log(`Response code: ${res.statusCode}`)
         res.on('data', data => {
-            if (res.statusCode == HttpStatus.OK) {
+            if (res.statusCode == HttpStatus.StatusCodes.OK) {
                 rawResponse = data.toString()
             }
         })
