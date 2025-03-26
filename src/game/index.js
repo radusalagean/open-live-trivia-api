@@ -12,6 +12,8 @@ const GAME_STATE_NONE = 0
 const GAME_STATE_SPLIT = 1
 const GAME_STATE_TRANSITION = 2
 
+const SOCKET_NAMESPACE = '/'
+
 const invalidWords = config.jServiceInvalidWords.map(word => word.toLowerCase());
 
 /**
@@ -382,27 +384,27 @@ function onRequestPlayerList(socket, data) {
 }
 
 function getPlayingUsers() {
-    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    let clientSockets = serverSocket.of(SOCKET_NAMESPACE).sockets.values()
     let userMap = new Map()
-    clientSockets.forEach(clientSocket => {
-        let user = clientSocket.client.user
+    for (const socket of clientSockets) {
+        let user = socket.client.user
         if (user) {
             userMap.set(user._id.toString(), getPublicUserProjection(user))
         }
-    })
+    }
     // Sort by user's coins (descending)
     userMap = new Map([...userMap.entries()].sort((a, b) => b[1].coins - a[1].coins))
     return userMap
 }
 
 function getPlayingUsersCount() {
-    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    let clientSockets = serverSocket.of(SOCKET_NAMESPACE).sockets.values()
     let count = 0
-    clientSockets.forEach(clientSocket => {
-        if (clientSocket.client.user) {
+    for (const socket of clientSockets) {
+        if (socket.client.user) {
             count++
         }
-    })
+    }
     return count
 }
 
@@ -480,47 +482,47 @@ function getGameState(user) {
 }
 
 function disconnectEveryone() {
-    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    let clientSockets = serverSocket.of(SOCKET_NAMESPACE).sockets.values()
     let disconnectedCount = 0
-    clientSockets.forEach(clientSocket => {
-        clientSocket.disconnect()
+    for (const socket of clientSockets) {
+        socket.disconnect()
         disconnectedCount++
-    })
+    }
     return disconnectedCount
 }
 
 function handleUserRightsChange(userId, rightsLevel) {
-    let clientSockets = Object.values(serverSocket.sockets.sockets)
-    clientSockets.forEach(clientSocket => {
-        let user = clientSocket.client.user
+    let clientSockets = serverSocket.of(SOCKET_NAMESPACE).sockets.values()
+    for (const socket of clientSockets) {
+        let user = socket.client.user
         if (user._id.toString() == userId) {
             user.rights = rightsLevel
             return
         }
-    })
+    }
 }
 
 function disconnectUserById(userId) {
-    let clientSockets = Object.values(serverSocket.sockets.sockets)
-    clientSockets.forEach(clientSocket => {
-        let user = clientSocket.client.user
+    let clientSockets = serverSocket.of(SOCKET_NAMESPACE).sockets.values()
+    for (const socket of clientSockets) {
+        let user = socket.client.user
         if (user._id.toString() == userId) {
-            clientSocket.disconnect()
+            socket.disconnect()
             return
         }
-    })
+    }
 }
 
 function disconnectExtraConnections(userId, currentSocket) {
-    let clientSockets = Object.values(serverSocket.sockets.sockets)
+    let clientSockets = serverSocket.of(SOCKET_NAMESPACE).sockets.values()
     let previousUserInstance
-    clientSockets.forEach(clientSocket => {
-        let user = clientSocket.client.user
-        if (user && user._id.toString() == userId && currentSocket.id !== clientSocket.id) {
+    for (const socket of clientSockets) {
+        let user = socket.client.user
+        if (user && user._id.toString() == userId && currentSocket.id !== socket.id) {
             previousUserInstance = user
-            clientSocket.disconnect()
+            socket.disconnect()
         }
-    })
+    }
     return previousUserInstance
 }
 
