@@ -39,7 +39,7 @@ module.exports = () => {
         auth.checkUsernameConflict(username, err => {
             // error
             return res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-                .json(jrh.message(`Error: ${err}`))
+                .json(jrh.message(`Error: ${err.message}`))
         }, () => {
             // conflict
             return res.status(HttpStatus.StatusCodes.CONFLICT)
@@ -50,7 +50,7 @@ module.exports = () => {
             auth.verifyIdTokenWithFirebase(idToken, err => {
                 // onError
                 return res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-                    .json(jrh.message(`Error: (${err})`))
+                    .json(jrh.message(`Error: (${err.message})`))
             }, (user, paylod) => {
                 // onUidFound
                 return res.status(HttpStatus.StatusCodes.CONFLICT)
@@ -73,7 +73,7 @@ module.exports = () => {
                         .json(getPublicUserProjection(user))
                 }).catch(err => {
                     return res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-                        .json(jrh.message(`Error: ${err}`))
+                        .json(jrh.message(`Error: ${err.message}`))
                 })
             })
         })
@@ -82,7 +82,7 @@ module.exports = () => {
     api.delete('/delete', auth.authorizedRequest, (req, res) => {
         let user = res.locals.user
         if (user.rights === userModel.TYPE_ADMIN) {
-            return res.status(HttpStatus.StatusCodes.UNAUTHORIZED)
+            return res.status(HttpStatus.StatusCodes.FORBIDDEN)
                 .json(jrh.message('Admins are not allowed to remove their account'))
         }
         userModel.User.deleteOne({
@@ -107,7 +107,7 @@ module.exports = () => {
         }
         auth.checkUsernameConflict(username, err => {
             res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-                .json(jrh.message(`Error: ${err}`))
+                .json(jrh.message(`Error: ${err.message}`))
         }, () => {
             res.status(HttpStatus.StatusCodes.CONFLICT).send()
         }, () => {

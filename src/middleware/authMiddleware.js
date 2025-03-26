@@ -113,7 +113,7 @@ const adminRights = (req, res, next) => {
 
 function assertRights(user, rights, res) {
     if (user.rights < rights) {
-        res.status(HttpStatus.StatusCodes.UNAUTHORIZED)
+        res.status(HttpStatus.StatusCodes.FORBIDDEN)
             .json(jrh.message(`You require at least rights type ${rights} for this operation`))
     }
     return user.rights >= rights
@@ -131,8 +131,8 @@ function assertAuthorizedHeader(req, res) {
 function checkRequestAuthorizationWithFirebase(idToken, res, next) {
     verifyIdTokenWithFirebase(idToken, err => {
         // onError
-        return res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(jrh.message(`Error: (${err})`))
+        return res.status(HttpStatus.StatusCodes.UNAUTHORIZED)
+            .json(jrh.message(`Error: (${err.message})`))
     }, (user, payload) => {
         // onUidFound
         updateIdToken(idToken, user, payload, err => {
@@ -214,7 +214,7 @@ function checkUsernameConflict(username, onError, onConflict, onNonConflict) {
 function verifyIdTokenWithFirebase(idToken, onError, onUidFound, onUidNotFound) {
     // Check idToken w/ Firebase Admin
     // console.log('Checking idToken with Firebase Admin')
-    admin.auth().verifyIdToken(idToken)
+    admin.auth().verifyIdToken(idToken, true)
         .then(payload => {
             // console.log('Firebase Auth Response')
             // Check if uid is in the database
@@ -231,8 +231,8 @@ function verifyIdTokenWithFirebase(idToken, onError, onUidFound, onUidNotFound) 
                 onError(err)
             })
         }).catch(error => {
-            // console.log(`Firebase Auth Error: ${error}`)
-            onError(error.code)
+            // console.log(`Firebase Auth Error: ${error.message}`)
+            onError(error)
         })
 }
 
