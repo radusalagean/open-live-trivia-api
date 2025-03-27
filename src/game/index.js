@@ -249,7 +249,12 @@ function postAuth(socket, data) {
         socket.client.user = previousUserInstance
     }
     // console.log(`postAuth(${socket.id})`)
-    socket.emit(ev.WELCOME, getGameState(socket.client.user))
+    let gameStateResponse = getGameState(socket.client.user)
+    if (gameStateResponse) {
+        socket.emit(ev.WELCOME, gameStateResponse)
+    } else {
+        socket.disconnect()
+    }
     // Send the game state as soon as the player is authenticated
     socket.broadcast.emit(ev.PEER_JOIN, {
         userId: socket.client.user._id.toString(),
@@ -459,9 +464,7 @@ function rewardCurrentPrize(user) {
 
 function getGameState(user) {
     if (!gameState) {
-        return {
-            gameState: gameState
-        }
+        return null
     } else {
         return {
             gameState: gameState,
