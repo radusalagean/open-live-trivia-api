@@ -21,11 +21,11 @@ app.use(bodyParser.json({
 }))
 
 // Routes
-app.use('/open-live-trivia-api/v1/', routes)
+app.use('/api/v1/', routes)
 
 // Public folder
-if (process.env.NODE_ENV == "development") { // In production, Nginx will server the public folder
-    app.use('/open-live-trivia-api-static', express.static('public'))
+if (process.env.NODE_ENV == "development") { // In production, Nginx will serve the public folder
+    app.use('/public', express.static('public'))
 }
 
 // HTTP Server
@@ -33,7 +33,7 @@ const server = http.createServer(app)
 
 // Socket.io
 const serverSocket = io(server, {
-    path: '/open-live-trivia-api/socket.io'
+    path: '/api/socket.io'
 })
 
 server.listen(config.port, () => {
