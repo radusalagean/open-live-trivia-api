@@ -9,6 +9,8 @@ services:
       - ${NETWORK_NAME:-open-live-trivia-network}
     volumes:
       - open-live-trivia-db:/data/db
+    env_file:
+      - env/db.env
 
   open-live-trivia-api:
     build:
@@ -22,6 +24,7 @@ services:
       - open-live-trivia-db
     env_file:
       - env/api.env
+      - env/db.env
 
 volumes:
   open-live-trivia-db:

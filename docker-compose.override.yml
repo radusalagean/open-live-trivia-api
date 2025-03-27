@@ -20,9 +20,8 @@ services:
       - 8081:8081
     networks:
       - ${NETWORK_NAME:-open-live-trivia-network}
-    environment:
-      ME_CONFIG_MONGODB_SERVER: open-live-trivia-db
-      ME_CONFIG_BASICAUTH: false
+    env_file:
+      - env/db-browser.env
 
 networks:
   open-live-trivia-network:
