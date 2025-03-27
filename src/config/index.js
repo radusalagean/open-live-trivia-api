@@ -1,7 +1,7 @@
 module.exports = {
     'port': 3006, // Port
     'socketAuthTimeout': 10 * 1000, // Duration of the period a user who just connected to the server socket has to authenticate, until he is disconnected automatically
-    'mongoUrl': `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@open-live-trivia-db:27017/data?authSource=admin`, // The database url
+    'mongoUrl': `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${require('fs').readFileSync(process.env.MONGO_INITDB_ROOT_PASSWORD_FILE, 'utf8').trim()}@open-live-trivia-db:27017/data?authSource=admin`, // The database url
     'bodyLimit': '100kb', // Max size of request bodies accepted
     'minAppVersionCode': 3, // The minimum compatible version code of the client app (check on the app and show "update app" dialog if required)
     'latestAppVersionCode': 3, // The latest version code of the client app (check on the app and inform the user about the available update)

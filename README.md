@@ -6,6 +6,7 @@
 ## Required files
 ```
 ~/.open-live-trivia_vault/open-live-trivia-firebase-adminsdk-e5krk-044318ee08.json
+secrets/db_root_password.txt
 ```
 
 ## Overview

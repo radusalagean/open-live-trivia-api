@@ -9,8 +9,14 @@ services:
       - ${NETWORK_NAME:-open-live-trivia-network}
     volumes:
       - open-live-trivia-db:/data/db
+      - open-live-trivia-db-dump:/db-dump
     env_file:
       - env/db.env
+    secrets:
+      - db_root_password
+    labels:
+      - docker-volume-backup.archive-pre=/bin/sh -c 'mongodump -u open-live-trivia -p $(cat /run/secrets/db_root_password) --authenticationDatabase admin -d data --archive > /db-dump/dump.archive'
+      - docker-volume-backup.exec-label=open-live-trivia-db
 
   open-live-trivia-api:
     build:
@@ -22,9 +28,38 @@ services:
       - ${NETWORK_NAME:-open-live-trivia-network}
     depends_on:
       - open-live-trivia-db
+    volumes:
+      - open-live-trivia-public-assets:/app/public
     env_file:
       - env/api.env
       - env/db.env
+    secrets:
+      - db_root_password
+
+  open-live-trivia-backup:
+    image: offen/docker-volume-backup:v2
+    container_name: open-live-trivia-backup
+    restart: unless-stopped
+    networks:
+      - ${NETWORK_NAME:-open-live-trivia-network}
+    env_file:
+      - path: ./env/backup.env
+      - path: ./env/backup-secrets.env
+        required: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - open-live-trivia-db-dump:/backup/db:ro
+      - open-live-trivia-public-assets:/backup/public:ro
+      - ${BACKUP_PATH:-./backups}:/archive
+
+secrets:
+  db_root_password:
+     file: secrets/db_root_password.txt
 
 volumes:
   open-live-trivia-db:
+    name: open-live-trivia-db
+  open-live-trivia-db-dump:
+    name: open-live-trivia-db-dump
+  open-live-trivia-public-assets:
+    name: open-live-trivia-public-assets
