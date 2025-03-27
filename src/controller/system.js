@@ -16,9 +16,7 @@ module.exports = () => {
 
     // Useful for gracefully disconnecting all players before doing maintenance on the prod server
     api.post('/disconnect_everyone', auth.authorizedRequest, auth.adminRights, (req, res) => {
-        let count = disconnectEveryone()
-        let message = `Sent the disconnect signal to ${count} clients`
-        console.log(message)
+        let message = disconnectEveryone()
         res.status(HttpStatus.StatusCodes.OK)
             .json(jrh.message(message))
     })

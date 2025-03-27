@@ -488,7 +488,9 @@ function disconnectEveryone() {
         socket.disconnect()
         disconnectedCount++
     }
-    return disconnectedCount
+    let message = `Sent the disconnect signal to ${disconnectedCount} clients`
+    console.log(message)
+    return message
 }
 
 function handleUserRightsChange(userId, rightsLevel) {
