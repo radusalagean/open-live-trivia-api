@@ -1,6 +1,6 @@
 FROM node:22
 
-COPY secrets/ ~/.open-live-trivia_vault/
+COPY .open-live-trivia_vault/ /root/.open-live-trivia_vault/
 
 WORKDIR /app
 
