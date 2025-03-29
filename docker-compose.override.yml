@@ -19,10 +19,10 @@ services:
     ports:
       - 8081:8081
     networks:
-      - ${NETWORK_NAME:-open-live-trivia-network}
+      - ${NETWORK_NAME:-open-live-trivia_network}
     env_file:
       - env/db-browser.env
 
 networks:
-  open-live-trivia-network:
+  open-live-trivia_network:
     driver: bridge

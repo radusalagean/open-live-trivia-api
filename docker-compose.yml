@@ -6,7 +6,7 @@ services:
     container_name: open-live-trivia-db
     restart: unless-stopped
     networks:
-      - ${NETWORK_NAME:-open-live-trivia-network}
+      - ${NETWORK_NAME:-open-live-trivia_network}
     volumes:
       - open-live-trivia-db:/data/db
       - open-live-trivia-db-dump:/db-dump
@@ -25,7 +25,7 @@ services:
     container_name: open-live-trivia-api
     restart: unless-stopped
     networks:
-      - ${NETWORK_NAME:-open-live-trivia-network}
+      - ${NETWORK_NAME:-open-live-trivia_network}
     depends_on:
       - open-live-trivia-db
     volumes:
@@ -41,7 +41,7 @@ services:
     container_name: open-live-trivia-backup
     restart: unless-stopped
     networks:
-      - ${NETWORK_NAME:-open-live-trivia-network}
+      - ${NETWORK_NAME:-open-live-trivia_network}
     env_file:
       - path: ./env/backup.env
       - path: ./env/backup-secrets.env
