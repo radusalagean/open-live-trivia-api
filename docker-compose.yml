@@ -1,4 +1,4 @@
-name: open-live-trivia
+name: open-live-trivia-api
 
 services:
   open-live-trivia-db:
