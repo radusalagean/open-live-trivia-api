@@ -1,5 +1,3 @@
-**Update October 14, 2020:** Both the server and the client app are now retired. Feel free to use the sources if you want to deploy your own server-client configuration of this project.
-
 # open-live-trivia-api
 **Open Live Trivia** is an open-source multiplayer trivia game. This repo hosts the server-side part of the project. For the corresponding client app, please check [this](https://github.com/radusalagean/open-live-trivia-app-android) link.
 
@@ -15,7 +13,7 @@ secrets/db_root_password.txt
 - Every player has 3 free attempts available to submit the correct answer
 - Additional attempts will cost 1 point
 - The answers are case insensitive
-- Every 15 seconds, a new random character is revealed from the answer (defined as a split)
+- Every 5 seconds, a new random character is revealed from the answer (defined as a split)
 - Entries range from 10 to 100 points in value (based on their difficulty)
 - Their value decreases as more characters are revealed
 - The first player to submit the correct answer wins the prize and the round is over
@@ -46,24 +44,24 @@ The communication of game-specific events between the server and the client is b
 [View the full resolution version](https://raw.githubusercontent.com/radusalagean/open-live-trivia-api/master/diagrams/game-activity.png)
 
 ## Usage
-Base URL: `https://releasetracker.app/open-live-trivia-api/v1/`
+Base URL: `https://openlivetrivia.com/api/v1/`
 
 For requests marked as `🔒`, you need to have the `Authorization` header set with your Firebase `idToken`.
 
-For requests marked as `🗐`, the results will be paginated and pagination-specific query string can be passed to specify the `page` number. Example: `https://releasetracker.app/open-live-trivia-api/v1/user/leaderboard?page=2`.
+For requests marked as `🗐`, the results will be paginated and pagination-specific query string can be passed to specify the `page` number. Example: `https://openlivetrivia.com/api/v1/user/leaderboard?page=2`.
 
 For all POST / PUT requests that have a json body provided, you need to set the `application/json` value for the `Content-Type` header.
 
 In the documentation, certain attributes displayed with a colon in the beginning (e.g. `:id`) need to be replaced with a corresponding value when you are making the call.
 
 **Profile image access url:**
-`https://releasetracker.app/open-live-trivia-api-static/user-thumbnails/:filename`, where:
+`https://openlivetrivia.com/public/user-thumbnails/:filename`, where:
 - `filename` = `userId` + `.png`
 
-Example: `https://releasetracker.app/open-live-trivia-api-static/user-thumbnails/5d1f77e3adc09e1fe5a9aa9e.png`
+Example: `https://openlivetrivia.com/public/user-thumbnails/5d1f77e3adc09e1fe5a9aa9e.png`
 
 ## Socket-based events `🔌`
-**Access url:** `https://releasetracker.app/open-live-trivia-api/socket.io`
+**Access url:** `https://openlivetrivia.com/api/socket.io`
 ### Client `📣` -> `🎧` Server events
 | **Event**| **Description**|
 |----------|----------------|
@@ -224,7 +222,7 @@ Example: `https://releasetracker.app/open-live-trivia-api-static/user-thumbnails
     
 ## Users `👤`
 ### Register `🔒`
-**[<code>POST</code> user/register](https://releasetracker.app/open-live-trivia-api/v1/user/register)**
+**[<code>POST</code> user/register](https://openlivetrivia.com/api/v1/user/register)**
 
 Request Body Parameters:
 - `username` - *String* (required)
@@ -253,7 +251,7 @@ Specific restrictions:
 - Note: spaces are allowed in usernames
 
 ### Login `🔒`
-**[<code>POST</code> user/login](https://releasetracker.app/open-live-trivia-api/v1/user/login)**
+**[<code>POST</code> user/login](https://openlivetrivia.com/api/v1/user/login)**
 
 Example Response Body **`200 OK`**:
 ```json
@@ -267,7 +265,7 @@ Example Response Body **`200 OK`**:
 ```
 
 ### Delete user `🔒`
-**[<code>DELETE</code> user/delete](https://releasetracker.app/open-live-trivia-api/v1/user/delete)**
+**[<code>DELETE</code> user/delete](https://openlivetrivia.com/api/v1/user/delete)**
 
 Example Response Body **`200 OK`**:
 ```json
@@ -279,7 +277,7 @@ Specific restrictions:
 - Admins are not allowed to remove their accounts
 
 ### Username availability
-**[<code>GET</code> user/availability/:username](https://releasetracker.app/open-live-trivia-api/v1/user/availability/radu)**
+**[<code>GET</code> user/availability/:username](https://openlivetrivia.com/api/v1/user/availability/radu)**
 
 Request URL parameters:
 - `username` - candidate username (required)
@@ -289,7 +287,7 @@ Response codes:
 - **`409 CONFLICT`** - Username is unavailable for registration
 
 ### Update user rights `🔒 ADMIN`
-**[<code>PUT</code> user/rights/:user_id/:rights_level](https://releasetracker.app/open-live-trivia-api/v1//user/rights/5d18a18aa12e471d24085d2e/1)**
+**[<code>PUT</code> user/rights/:user_id/:rights_level](https://openlivetrivia.com/api/v1//user/rights/5d18a18aa12e471d24085d2e/1)**
 
 Request URL parameters:
 - `user_id` - the id of the target user (required)
@@ -306,7 +304,7 @@ Example Response Body **`200 OK`**:
 ```
 
 ### Leaderboard `🔒` `🗐`
-**[<code>GET</code> user/leaderboard](https://releasetracker.app/open-live-trivia-api/v1/user/leaderboard)**
+**[<code>GET</code> user/leaderboard](https://openlivetrivia.com/api/v1/user/leaderboard)**
 
 Example Response Body **`200 OK`**:
 ```json
@@ -330,7 +328,7 @@ Example Response Body **`200 OK`**:
 ```
 
 ### Me `🔒`
-**[<code>GET</code> user/me](https://releasetracker.app/open-live-trivia-api/v1/user/me)**
+**[<code>GET</code> user/me](https://openlivetrivia.com/api/v1/user/me)**
 
 Example Response Body **`200 OK`**:
 ```json
@@ -345,7 +343,7 @@ Example Response Body **`200 OK`**:
 
 ## Entry reports `🚩`
 ### Query reports `🔒 MODERATOR / ADMIN` `🗐`
-**[<code>GET</code> reported_entry/get_reports](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/get_reports)**
+**[<code>GET</code> reported_entry/get_reports](https://openlivetrivia.com/api/v1/reported_entry/get_reports)**
 
 Request URL query string parameters:
 - `banned` - *Boolean* (optional)
@@ -380,7 +378,7 @@ Example Response Body **`200 OK`**:
 Note: Entries currently running in the game will be excluded from the results.
 
 ### Ban reported entry `🔒 MODERATOR / ADMIN`
-**[<code>PUT</code> reported_entry/ban/:report_id](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/ban/5d1f379a78c6e7342c49488e)**
+**[<code>PUT</code> reported_entry/ban/:report_id](https://openlivetrivia.com/api/v1/reported_entry/ban/5d1f379a78c6e7342c49488e)**
 
 Request URL parameters:
 - `report_id` - the id of the target report (required)
@@ -393,7 +391,7 @@ Example Response Body **`200 OK`**:
 ```
 
 ### Unban reported entry `🔒 MODERATOR / ADMIN`
-**[<code>PUT</code> reported_entry/unban/:report_id](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/unban/5d1f379a78c6e7342c49488e)**
+**[<code>PUT</code> reported_entry/unban/:report_id](https://openlivetrivia.com/api/v1/reported_entry/unban/5d1f379a78c6e7342c49488e)**
 
 Request URL parameters:
 - `report_id` - the id of the target report (required)
@@ -406,7 +404,7 @@ Example Response Body **`200 OK`**:
 ```
 
 ### Dismiss reported entry `🔒 MODERATOR / ADMIN`
-**[<code>PUT</code> reported_entry/dismiss/:report_id](https://releasetracker.app/open-live-trivia-api/v1/reported_entry/dismiss/5d1f379a78c6e7342c49488e)**
+**[<code>PUT</code> reported_entry/dismiss/:report_id](https://openlivetrivia.com/api/v1/reported_entry/dismiss/5d1f379a78c6e7342c49488e)**
 
 Request URL parameters:
 - `report_id` - the id of the target report (required)
@@ -420,7 +418,7 @@ Example Response Body **`200 OK`**:
 
 ## System `⚙️`
 ### Disconnect everyone `🔒 ADMIN`
-**[<code>POST</code> system/disconnect_everyone](https://releasetracker.app/open-live-trivia-api/v1/system/disconnect_everyone)**
+**[<code>POST</code> system/disconnect_everyone](https://openlivetrivia.com/api/v1/system/disconnect_everyone)**
 
 Example Response Body **`200 OK`**:
 ```json
@@ -430,7 +428,7 @@ Example Response Body **`200 OK`**:
 ```
 
 ### Info
-**[<code>GET</code> system/info](https://releasetracker.app/open-live-trivia-api/v1/system/info)**
+**[<code>GET</code> system/info](https://openlivetrivia.com/api/v1/system/info)**
 
 Example Response Body **`200 OK`**:
 ```json
