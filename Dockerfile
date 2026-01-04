@@ -1,7 +1,5 @@
 FROM node:22
 
-COPY .open-live-trivia_vault/ /root/.open-live-trivia_vault/
-
 WORKDIR /app
 
 COPY package.json package-lock.json ./
