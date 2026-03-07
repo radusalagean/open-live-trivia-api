@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const admin = require('firebase-admin');
 const http = require('http');
 const bodyParser = require('body-parser');
@@ -14,6 +15,11 @@ const auth = require('./middleware/authMiddleware');
 admin.initializeApp()
 
 const app = express()
+
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    credentials: true
+}))
 
 // Parse application/json
 app.use(bodyParser.json({
