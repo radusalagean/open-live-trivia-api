@@ -17,7 +17,7 @@ admin.initializeApp()
 const app = express()
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://openlivetrivia.com', 'https://www.openlivetrivia.com', 'http://openlivetrivia.local', 'http://www.openlivetrivia.local'],
     credentials: true
 }))
 
