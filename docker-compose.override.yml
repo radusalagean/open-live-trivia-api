@@ -8,7 +8,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - $HOME/.open-live-trivia_vault:/root/.open-live-trivia_vault:ro
+      - $HOME/.open-live-trivia_vault/open-live-trivia-firebase-adminsdk-e5krk-044318ee08.json:/root/open-live-trivia-firebase-adminsdk-e5krk-044318ee08.json:ro
     tty: true
     stdin_open: true
 

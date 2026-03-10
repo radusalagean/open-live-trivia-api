@@ -19,7 +19,9 @@ services:
       - docker-volume-backup.exec-label=open-live-trivia-db
 
   open-live-trivia-api:
-    image: ghcr.io/radusalagean/open-live-trivia-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: open-live-trivia-api
     restart: unless-stopped
     networks:
